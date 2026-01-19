@@ -35,7 +35,16 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
+# Copy startup script
+COPY --from=builder /app/start.sh ./start.sh
+RUN chmod +x ./start.sh
+
+# Change ownership for migrations
+USER root
+RUN chown -R nextjs:nodejs /app
 USER nextjs
 
 EXPOSE 3000
@@ -43,4 +52,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["./start.sh"]
