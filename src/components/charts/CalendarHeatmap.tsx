@@ -9,7 +9,7 @@ interface CalendarHeatmapProps {
 }
 
 export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
-  const { weeks, maxValue, dataMap } = useMemo(() => {
+  const { weeks, maxValue } = useMemo(() => {
     const yearStart = startOfYear(new Date());
     const today = new Date();
     const days = eachDayOfInterval({ start: yearStart, end: today });

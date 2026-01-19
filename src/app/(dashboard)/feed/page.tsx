@@ -43,6 +43,7 @@ export default function FeedPage() {
 
   useEffect(() => {
     fetchFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const fetchFeed = async () => {

@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const filter = searchParams.get("filter") || "all"; // all, joined
 
-    let where: any = { isPublic: true };
+    const where: Record<string, unknown> = { isPublic: true };
 
     if (filter === "joined") {
       where.members = {

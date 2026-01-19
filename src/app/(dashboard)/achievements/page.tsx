@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, Badge } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
-import { BADGE_DEFINITIONS, RARITY_COLORS, type BadgeRarity } from "@/lib/achievements";
+import { BADGE_DEFINITIONS } from "@/lib/achievements";
 
 interface Achievement {
   id: number;
@@ -19,12 +19,6 @@ export default function AchievementsPage() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (user) {
-      fetchAchievements();
-    }
-  }, [user]);
-
   const fetchAchievements = async () => {
     if (!user) return;
     try {
@@ -37,6 +31,13 @@ export default function AchievementsPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      fetchAchievements();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const unlockedTypes = new Set(achievements.map((a) => a.badgeType));
 

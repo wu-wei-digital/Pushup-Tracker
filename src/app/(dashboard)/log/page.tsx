@@ -36,7 +36,7 @@ export default function LogPage() {
       {/* Today's Total */}
       <Card className="text-center">
         <p className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-          Today's Total
+          Today&apos;s Total
         </p>
         <p className="text-5xl font-bold text-primary-600 dark:text-primary-400 mt-2">
           {todayTotal}
@@ -57,7 +57,7 @@ export default function LogPage() {
       {/* Today's Entries */}
       <Card>
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Today's Entries
+          Today&apos;s Entries
         </h2>
         <TodayEntries
           entries={entries}

@@ -39,6 +39,7 @@ export default function ChallengeDetailPage() {
 
   useEffect(() => {
     fetchChallenge();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [challengeId]);
 
   const fetchChallenge = async () => {

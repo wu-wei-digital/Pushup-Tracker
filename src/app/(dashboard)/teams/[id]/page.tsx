@@ -38,6 +38,7 @@ export default function TeamDetailPage() {
 
   useEffect(() => {
     fetchTeam();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teamId]);
 
   const fetchTeam = async () => {

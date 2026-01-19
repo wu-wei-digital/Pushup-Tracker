@@ -36,7 +36,7 @@ interface ProfileData {
 
 export default function UserProfilePage() {
   const params = useParams();
-  const { user: currentUser } = useAuth();
+  useAuth();
   const { showToast } = useToast();
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,6 +46,7 @@ export default function UserProfilePage() {
 
   useEffect(() => {
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
   const fetchProfile = async () => {

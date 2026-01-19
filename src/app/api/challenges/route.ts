@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 
     const now = new Date();
 
-    let where: any = { isPublic: true };
+    const where: Record<string, unknown> = { isPublic: true };
 
     if (filter === "active") {
       where.endDate = { gte: now };

@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
     const pointsEarned = calculatePushupPoints(amount, isFirstOfDay, currentStreak);
 
     // Create entry and update user points in a transaction
-    const [entry, user] = await prisma.$transaction(async (tx) => {
+    const [entry] = await prisma.$transaction(async (tx) => {
       const newEntry = await tx.pushupEntry.create({
         data: {
           userId: payload.userId,

@@ -13,7 +13,13 @@ export default function ProfilePage() {
   const [bio, setBio] = useState("");
   const [yearlyGoal, setYearlyGoal] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [stats, setStats] = useState<any>(null);
+  const [stats, setStats] = useState<{
+    totalPushups: number;
+    yearTotal: number;
+    currentStreak: number;
+    longestStreak: number;
+    achievementsCount: number;
+  } | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -22,6 +28,7 @@ export default function ProfilePage() {
       setYearlyGoal(user.yearlyGoal.toString());
       fetchProfile();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const fetchProfile = async () => {

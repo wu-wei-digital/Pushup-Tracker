@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     cookieStore.set(AUTH_COOKIE_OPTIONS.name, token, AUTH_COOKIE_OPTIONS);
 
     // Return user data (excluding password)
-    const { passwordHash: _, ...userWithoutPassword } = user;
+    const { passwordHash: _hash, ...userWithoutPassword } = user;
 
     return NextResponse.json({ user: userWithoutPassword });
   } catch (error) {

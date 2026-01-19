@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const pageSize = parseInt(searchParams.get("pageSize") || "20");
     const unreadOnly = searchParams.get("unreadOnly") === "true";
 
-    const where: any = { userId: payload.userId };
+    const where: Record<string, unknown> = { userId: payload.userId };
     if (unreadOnly) {
       where.isRead = false;
     }

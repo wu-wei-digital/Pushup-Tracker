@@ -1,6 +1,6 @@
-import { startOfYear, endOfYear, differenceInDays, startOfDay, isAfter } from "date-fns";
+import { startOfYear, endOfYear, differenceInDays, startOfDay } from "date-fns";
 
-export function calculateDailyTarget(yearlyGoal: number, totalDone: number, timezone: string = "UTC"): number {
+export function calculateDailyTarget(yearlyGoal: number, totalDone: number, _timezone: string = "UTC"): number {
   const now = new Date();
   const yearEnd = endOfYear(now);
   const daysRemaining = differenceInDays(yearEnd, now) + 1;

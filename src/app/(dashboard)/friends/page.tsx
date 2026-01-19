@@ -33,7 +33,7 @@ export default function FriendsPage() {
   const [requests, setRequests] = useState<Friend[]>([]);
   const [searchResults, setSearchResults] = useState<SearchUser[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
 
   useEffect(() => {

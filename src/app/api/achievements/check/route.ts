@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
-import { getNewlyUnlockedBadges, BADGE_DEFINITIONS, type AchievementCheckStats } from "@/lib/achievements";
-import { calculateStreak, getTodayBounds, getWeekBounds, getMonthBounds } from "@/lib/calculations";
+import { getNewlyUnlockedBadges, type AchievementCheckStats } from "@/lib/achievements";
+import { calculateStreak, getTodayBounds, getWeekBounds } from "@/lib/calculations";
 import { POINTS } from "@/lib/points";
 import { startOfYear } from "date-fns";
 
