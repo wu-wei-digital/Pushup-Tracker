@@ -1,19 +1,15 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:15-alpine
-    container_name: pushup-tracker-db
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: pushup
-      POSTGRES_PASSWORD: pushup_secret
-      POSTGRES_DB: pushup_tracker
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER:-pushup}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pushup_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-pushup_tracker}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pushup -d pushup_tracker"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pushup} -d ${POSTGRES_DB:-pushup_tracker}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,13 +18,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: pushup-tracker-app
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://pushup:pushup_secret@db:5432/pushup_tracker
-      JWT_SECRET: your-super-secret-jwt-key-change-in-production
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pushup}:${POSTGRES_PASSWORD:-pushup_secret}@db:5432/${POSTGRES_DB:-pushup_tracker}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
     depends_on:
       db:
         condition: service_healthy
