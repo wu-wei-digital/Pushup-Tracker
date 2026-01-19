@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#Other files
+pushup-tracker-project-plan.md
+
+#Claude
+/.Claude
