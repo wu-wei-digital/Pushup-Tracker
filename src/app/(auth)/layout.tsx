@@ -21,8 +21,8 @@ export default function AuthLayout({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600" />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500" />
       </div>
     );
   }
@@ -32,7 +32,7 @@ export default function AuthLayout({
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* Theme toggle in corner */}
       <div className="absolute top-4 right-4">
         <ThemeToggle />
@@ -43,19 +43,35 @@ export default function AuthLayout({
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-600 rounded-2xl mb-4">
-              <span className="text-white font-bold text-3xl">P</span>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-sage-500 rounded-2xl mb-4 shadow-lg shadow-sage-500/25">
+              <span className="text-white font-display font-bold text-3xl">P</span>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-display font-bold text-foreground">
               Pushup Tracker
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
+            <p className="text-sage-600 dark:text-sage-400 mt-2">
               Track your progress, compete with friends
             </p>
           </div>
 
           {children}
         </div>
+      </div>
+
+      {/* Footer branding */}
+      <div className="text-center py-4">
+        <p className="text-sm text-sage-400 dark:text-sage-500">
+          A{" "}
+          <a
+            href="https://wuwei.digital"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sage-500 hover:text-coral-500 dark:text-sage-400 dark:hover:text-coral-400 transition-colors"
+          >
+            Wu Wei Digital
+          </a>
+          {" "}project
+        </p>
       </div>
     </div>
   );

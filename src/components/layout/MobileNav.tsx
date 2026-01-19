@@ -48,7 +48,7 @@ export default function MobileNav() {
   if (!user) return null;
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 safe-area-bottom">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/90 dark:bg-sage-900/90 backdrop-blur-md border-t border-sage-100 dark:border-sage-800 safe-area-bottom">
       <div className="flex items-center justify-around h-16">
         {mobileNavItems.map((item) => {
           const isActive = pathname === item.href;
@@ -59,8 +59,8 @@ export default function MobileNav() {
               className={clsx(
                 "flex flex-col items-center justify-center w-full h-full gap-1 transition-colors",
                 isActive
-                  ? "text-primary-600 dark:text-primary-400"
-                  : "text-gray-500 dark:text-gray-400"
+                  ? "text-sage-600 dark:text-sage-300"
+                  : "text-sage-400 dark:text-sage-500"
               )}
             >
               {iconMap[item.icon]}
