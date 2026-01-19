@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  username     String    @unique @db.VarChar(50)
+  email        String    @unique @db.VarChar(255)
+  passwordHash String    @map("password_hash")
+  displayName  String?   @map("display_name")
+  bio          String?
+  yearlyGoal   Int       @default(10000) @map("yearly_goal")
+  timezone     String    @default("UTC")
+  points       Int       @default(0)
+  level        Int       @default(1)
+  currentTitle String?   @map("current_title")
+  theme        String    @default("system")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  entries                   PushupEntry[]
+  achievements              Achievement[]
+  pokesSent                 Poke[]                   @relation("PokesSent")
+  pokesReceived             Poke[]                   @relation("PokesReceived")
+  reactions                 Reaction[]
+  comments                  Comment[]
+  friendships               Friendship[]             @relation("UserFriends")
+  friendOf                  Friendship[]             @relation("FriendOf")
+  notifications             Notification[]
+  challengesCreated         Challenge[]
+  challengeParticipations   ChallengeParticipant[]
+  teamsCreated              Team[]
+  teamMemberships           TeamMember[]
+
+  @@map("users")
+}
+
+model PushupEntry {
+  id        Int        @id @default(autoincrement())
+  userId    Int        @map("user_id")
+  amount    Int
+  note      String?
+  createdAt DateTime   @default(now()) @map("created_at")
+  isDeleted Boolean    @default(false) @map("is_deleted")
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reactions Reaction[]
+  comments  Comment[]
+
+  @@map("pushup_entries")
+}
+
+model Achievement {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  badgeType   String   @map("badge_type")
+  badgeName   String   @map("badge_name")
+  badgeDesc   String?  @map("badge_description")
+  badgeRarity String   @map("badge_rarity")
+  unlockedAt  DateTime @default(now()) @map("unlocked_at")
+  isShowcased Boolean  @default(false) @map("is_showcased")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeType])
+  @@map("achievements")
+}
+
+model Poke {
+  id        Int      @id @default(autoincrement())
+  pokerId   Int      @map("poker_id")
+  pokedId   Int      @map("poked_id")
+  message   String?
+  createdAt DateTime @default(now()) @map("created_at")
+  isRead    Boolean  @default(false) @map("is_read")
+
+  poker User @relation("PokesSent", fields: [pokerId], references: [id], onDelete: Cascade)
+  poked User @relation("PokesReceived", fields: [pokedId], references: [id], onDelete: Cascade)
+
+  @@map("pokes")
+}
+
+model Reaction {
+  id           Int         @id @default(autoincrement())
+  userId       Int         @map("user_id")
+  entryId      Int         @map("entry_id")
+  reactionType String      @map("reaction_type")
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entry PushupEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, entryId, reactionType])
+  @@map("reactions")
+}
+
+model Comment {
+  id        Int         @id @default(autoincrement())
+  userId    Int         @map("user_id")
+  entryId   Int         @map("entry_id")
+  content   String
+  createdAt DateTime    @default(now()) @map("created_at")
+  isDeleted Boolean     @default(false) @map("is_deleted")
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entry PushupEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Friendship {
+  id         Int       @id @default(autoincrement())
+  userId     Int       @map("user_id")
+  friendId   Int       @map("friend_id")
+  status     String    @default("pending")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  acceptedAt DateTime? @map("accepted_at")
+
+  user   User @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend User @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, friendId])
+  @@map("friendships")
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  type      String
+  title     String
+  content   String?
+  link      String?
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Challenge {
+  id            Int       @id @default(autoincrement())
+  creatorId     Int       @map("creator_id")
+  name          String
+  description   String?
+  challengeType String    @map("challenge_type")
+  startDate     DateTime  @map("start_date")
+  endDate       DateTime  @map("end_date")
+  targetAmount  Int?      @map("target_amount")
+  isPublic      Boolean   @default(true) @map("is_public")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  creator      User                   @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  participants ChallengeParticipant[]
+
+  @@map("challenges")
+}
+
+model ChallengeParticipant {
+  id          Int       @id @default(autoincrement())
+  challengeId Int       @map("challenge_id")
+  userId      Int       @map("user_id")
+  teamName    String?   @map("team_name")
+  joinedAt    DateTime  @default(now()) @map("joined_at")
+
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeId, userId])
+  @@map("challenge_participants")
+}
+
+model Team {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  creatorId   Int      @map("creator_id")
+  teamGoal    Int      @default(50000) @map("team_goal")
+  isPublic    Boolean  @default(true) @map("is_public")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  creator User         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  members TeamMember[]
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id       Int      @id @default(autoincrement())
+  teamId   Int      @map("team_id")
+  userId   Int      @map("user_id")
+  role     String   @default("member")
+  joinedAt DateTime @default(now()) @map("joined_at")
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@map("team_members")
+}
