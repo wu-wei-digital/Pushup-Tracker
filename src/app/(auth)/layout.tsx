@@ -45,16 +45,16 @@ export default function AuthLayout({
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="inline-block mb-4">
-              {/* Light mode: dark logo, Dark mode: light logo */}
+              {/* Light mode: light logo, Dark mode: dark logo */}
               <Image
-                src="/pushup-tracker-logo-dark.png"
+                src="/pushup-tracker-logo-light.png"
                 alt="Pushup Tracker"
                 width={64}
                 height={64}
                 className="dark:hidden"
               />
               <Image
-                src="/pushup-tracker-logo-light.png"
+                src="/pushup-tracker-logo-dark.png"
                 alt="Pushup Tracker"
                 width={64}
                 height={64}

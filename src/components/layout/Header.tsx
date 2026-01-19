@@ -15,16 +15,16 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-2 group">
-            {/* Light mode: dark logo, Dark mode: light logo */}
+            {/* Light mode: light logo, Dark mode: dark logo */}
             <Image
-              src="/pushup-tracker-logo-dark.png"
+              src="/pushup-tracker-logo-light.png"
               alt="Pushup Tracker"
               width={32}
               height={32}
               className="dark:hidden"
             />
             <Image
-              src="/pushup-tracker-logo-light.png"
+              src="/pushup-tracker-logo-dark.png"
               alt="Pushup Tracker"
               width={32}
               height={32}

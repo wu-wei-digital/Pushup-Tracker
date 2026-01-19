@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   description: "Social, gamified pushup tracking app with challenges, achievements, and friends",
   keywords: ["pushup", "fitness", "tracker", "workout", "exercise", "challenge", "wu wei digital"],
   icons: {
-    icon: "/pushup-tracker-logo-dark.png",
-    apple: "/pushup-tracker-logo-dark.png",
+    icon: "/pushup-tracker-logo-light.png",
+    apple: "/pushup-tracker-logo-light.png",
   },
 };
 
