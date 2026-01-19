@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pushup_secret}
       POSTGRES_DB: ${POSTGRES_DB:-pushup_tracker}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_v2:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pushup} -d ${POSTGRES_DB:-pushup_tracker}"]
       interval: 10s
@@ -30,4 +30,4 @@ services:
         condition: service_healthy
 
 volumes:
-  postgres_data:
+  postgres_data_v2:
