@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 
@@ -43,8 +44,22 @@ export default function AuthLayout({
         <div className="w-full max-w-md">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-sage-500 rounded-2xl mb-4 shadow-lg shadow-sage-500/25">
-              <span className="text-white font-display font-bold text-3xl">P</span>
+            <div className="inline-block mb-4">
+              {/* Light mode: dark logo, Dark mode: light logo */}
+              <Image
+                src="/pushup-tracker-logo-dark.png"
+                alt="Pushup Tracker"
+                width={64}
+                height={64}
+                className="dark:hidden"
+              />
+              <Image
+                src="/pushup-tracker-logo-light.png"
+                alt="Pushup Tracker"
+                width={64}
+                height={64}
+                className="hidden dark:block"
+              />
             </div>
             <h1 className="text-2xl font-display font-bold text-foreground">
               Pushup Tracker

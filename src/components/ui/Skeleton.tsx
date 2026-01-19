@@ -24,7 +24,7 @@ export default function Skeleton({
   return (
     <div
       className={clsx(
-        "animate-pulse bg-gray-200 dark:bg-gray-700",
+        "animate-pulse bg-sage-200 dark:bg-sage-800",
         variants[variant],
         className
       )}
@@ -39,7 +39,7 @@ export default function Skeleton({
 // Pre-built skeleton components for common use cases
 export function CardSkeleton() {
   return (
-    <div className="p-4 sm:p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm">
+    <div className="p-4 sm:p-6 rounded-2xl bg-white dark:bg-sage-900 border border-sage-100 dark:border-sage-800 shadow-sm">
       <Skeleton className="h-4 w-1/3 mb-4" />
       <Skeleton className="h-8 w-1/2 mb-2" />
       <Skeleton className="h-2.5 w-full" variant="rectangular" />
@@ -61,7 +61,7 @@ export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
 
 export function EntryItemSkeleton() {
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
+    <div className="flex items-center justify-between p-3 rounded-lg bg-sage-50 dark:bg-sage-800/50">
       <div className="flex items-center gap-3">
         <Skeleton className="h-10 w-10" variant="circular" />
         <div>

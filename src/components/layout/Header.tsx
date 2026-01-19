@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import ThemeToggle from "./ThemeToggle";
 import NotificationBell from "../notifications/NotificationBell";
@@ -14,9 +15,21 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-sage-500 rounded-lg flex items-center justify-center group-hover:shadow-lg group-hover:shadow-sage-500/25 transition-all duration-200">
-              <span className="text-white font-bold text-lg font-display">P</span>
-            </div>
+            {/* Light mode: dark logo, Dark mode: light logo */}
+            <Image
+              src="/pushup-tracker-logo-dark.png"
+              alt="Pushup Tracker"
+              width={32}
+              height={32}
+              className="dark:hidden"
+            />
+            <Image
+              src="/pushup-tracker-logo-light.png"
+              alt="Pushup Tracker"
+              width={32}
+              height={32}
+              className="hidden dark:block"
+            />
             <span className="font-display font-semibold text-xl text-foreground hidden sm:block">
               Pushup Tracker
             </span>
