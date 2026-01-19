@@ -34,7 +34,8 @@ export async function getCurrentUser(): Promise<JWTPayload | null> {
   return verifyToken(token);
 }
 
-export function setAuthCookie(_token: string): void {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function setAuthCookie(token: string): void {
   // This is used in API routes
   // The actual cookie setting is done via the response headers
 }

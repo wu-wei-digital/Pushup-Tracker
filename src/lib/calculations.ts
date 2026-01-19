@@ -1,6 +1,7 @@
 import { startOfYear, endOfYear, differenceInDays, startOfDay } from "date-fns";
 
-export function calculateDailyTarget(yearlyGoal: number, totalDone: number, _timezone: string = "UTC"): number {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function calculateDailyTarget(yearlyGoal: number, totalDone: number, timezone: string = "UTC"): number {
   const now = new Date();
   const yearEnd = endOfYear(now);
   const daysRemaining = differenceInDays(yearEnd, now) + 1;
