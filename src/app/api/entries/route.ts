@@ -239,9 +239,8 @@ export async function POST(request: NextRequest) {
       allDatesForStreak.map(e => e.createdAt.toISOString().split("T")[0])
     ).size;
 
-    // Count challenges won (simplified - challenges where user is participant and challenge ended)
-    const now = new Date();
-    const challengesWon = 0; // Would need more complex logic to determine wins
+    // Count challenges won (simplified - would need more complex logic to determine wins)
+    const challengesWon = 0;
 
     const stats: AchievementCheckStats = {
       totalPushups: totalStats._sum.amount || 0,
