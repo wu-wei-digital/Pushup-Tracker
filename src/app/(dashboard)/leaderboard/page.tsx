@@ -54,21 +54,21 @@ export default function LeaderboardPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-gray-900">
           Leaderboard
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <p className="text-gray-600 mt-1">
           See how you stack up against others
         </p>
       </div>
 
       {/* Current User Rank */}
       {currentUserRank > 0 && (
-        <Card className="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/30 dark:to-primary-800/20">
+        <Card className="bg-gradient-to-r from-primary-50 to-primary-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">Your Rank</p>
-              <p className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+              <p className="text-sm text-gray-600">Your Rank</p>
+              <p className="text-3xl font-bold text-primary-600">
                 #{currentUserRank}
               </p>
             </div>
@@ -80,7 +80,7 @@ export default function LeaderboardPage() {
       )}
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-2 border-b border-gray-200">
         {[
           { id: "global" as Tab, label: "Global" },
           { id: "friends" as Tab, label: "Friends" },
@@ -91,8 +91,8 @@ export default function LeaderboardPage() {
             onClick={() => handleTabChange(tab.id)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.id
-                ? "border-primary-600 text-primary-600 dark:border-primary-400 dark:text-primary-400"
-                : "border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                ? "border-primary-600 text-primary-600"
+                : "border-transparent text-gray-500 hover:text-gray-700"
             }`}
           >
             {tab.label}
@@ -121,7 +121,7 @@ export default function LeaderboardPage() {
           >
             Previous
           </Button>
-          <span className="text-sm text-gray-600 dark:text-gray-400">
+          <span className="text-sm text-gray-600">
             Page {page} of {totalPages}
           </span>
           <Button

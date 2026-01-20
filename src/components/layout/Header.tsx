@@ -3,32 +3,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
-import ThemeToggle from "./ThemeToggle";
 import NotificationBell from "../notifications/NotificationBell";
 
 export default function Header() {
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/80 dark:bg-sage-900/80 backdrop-blur-md border-b border-sage-100 dark:border-sage-800">
+    <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-md border-b border-sage-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/dashboard" className="flex items-center gap-2 group">
-            {/* Light mode: light logo, Dark mode: dark logo */}
             <Image
               src="/pushup-tracker-logo-light.png"
               alt="Pushup Tracker"
               width={32}
               height={32}
-              className="dark:hidden"
-            />
-            <Image
-              src="/pushup-tracker-logo-dark.png"
-              alt="Pushup Tracker"
-              width={32}
-              height={32}
-              className="hidden dark:block"
             />
             <span className="font-display font-semibold text-xl text-foreground hidden sm:block">
               Pushup Tracker
@@ -37,8 +27,6 @@ export default function Header() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            <ThemeToggle />
-
             {user && (
               <>
                 <NotificationBell />
@@ -46,10 +34,10 @@ export default function Header() {
                 <div className="hidden sm:flex items-center gap-3 ml-2">
                   <Link
                     href="/profile"
-                    className="flex items-center gap-2 text-sm text-sage-700 dark:text-sage-300 hover:text-sage-900 dark:hover:text-white transition-colors"
+                    className="flex items-center gap-2 text-sm text-sage-700 hover:text-sage-900 transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-sage-100 dark:bg-sage-800 flex items-center justify-center">
-                      <span className="text-sage-600 dark:text-sage-300 font-medium">
+                    <div className="w-8 h-8 rounded-full bg-sage-100 flex items-center justify-center">
+                      <span className="text-sage-600 font-medium">
                         {user.username.charAt(0).toUpperCase()}
                       </span>
                     </div>
@@ -58,7 +46,7 @@ export default function Header() {
 
                   <button
                     onClick={() => logout()}
-                    className="text-sm text-sage-500 hover:text-coral-500 dark:text-sage-400 dark:hover:text-coral-400 transition-colors"
+                    className="text-sm text-sage-500 hover:text-coral-500 transition-colors"
                   >
                     Logout
                   </button>

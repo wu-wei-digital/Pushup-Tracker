@@ -102,10 +102,10 @@ export default function FeedPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-foreground">
             Activity Feed
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sage-600 mt-1">
             See what everyone is up to
           </p>
         </div>
@@ -133,10 +133,10 @@ export default function FeedPage() {
             <Card key={i}>
               <div className="animate-pulse">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full" />
+                  <div className="w-10 h-10 bg-sage-200 rounded-full" />
                   <div className="flex-1">
-                    <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-                    <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
+                    <div className="h-4 w-32 bg-sage-200 rounded mb-2" />
+                    <div className="h-3 w-24 bg-sage-200 rounded" />
                   </div>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function FeedPage() {
         </div>
       ) : entries.length === 0 ? (
         <Card>
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-sage-500">
             {filter === "friends" ? (
               <p>No activity from friends yet. Add some friends!</p>
             ) : (
@@ -160,17 +160,17 @@ export default function FeedPage() {
               {/* Header */}
               <div className="flex items-center gap-3 mb-4">
                 <Link href={`/profile/${entry.user.id}`}>
-                  <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                    <span className="text-primary-600 dark:text-primary-400 font-medium">
+                  <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
+                    <span className="text-sage-600 font-medium">
                       {(entry.user.displayName || entry.user.username).charAt(0).toUpperCase()}
                     </span>
                   </div>
                 </Link>
                 <div className="flex-1">
-                  <Link href={`/profile/${entry.user.id}`} className="font-medium text-gray-900 dark:text-white hover:underline">
+                  <Link href={`/profile/${entry.user.id}`} className="font-medium text-foreground hover:underline">
                     {entry.user.displayName || entry.user.username}
                   </Link>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-sage-500">
                     {formatDistanceToNow(new Date(entry.createdAt), { addSuffix: true })}
                   </p>
                 </div>
@@ -178,11 +178,11 @@ export default function FeedPage() {
 
               {/* Content */}
               <div className="mb-4">
-                <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                  Did <span className="text-primary-600 dark:text-primary-400">{entry.data.amount}</span> pushup{entry.data.amount !== 1 ? "s" : ""}
+                <p className="text-lg font-semibold text-foreground">
+                  Did <span className="text-sage-600">{entry.data.amount}</span> pushup{entry.data.amount !== 1 ? "s" : ""}
                 </p>
                 {entry.data.note && (
-                  <p className="text-gray-600 dark:text-gray-400 mt-1">{entry.data.note}</p>
+                  <p className="text-sage-600 mt-1">{entry.data.note}</p>
                 )}
               </div>
 
@@ -197,8 +197,8 @@ export default function FeedPage() {
                       onClick={() => handleReaction(entry.data.entryId, type)}
                       className={`px-2 py-1 rounded-full text-sm transition-colors ${
                         hasReacted
-                          ? "bg-primary-100 dark:bg-primary-900"
-                          : "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700"
+                          ? "bg-sage-100"
+                          : "bg-sage-100 hover:bg-sage-200"
                       }`}
                     >
                       {REACTION_EMOJIS[type]} {count > 0 && count}
@@ -208,10 +208,10 @@ export default function FeedPage() {
               </div>
 
               {/* Comment count / toggle */}
-              <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-4 text-sm text-sage-500">
                 <button
                   onClick={() => setCommentingOn(commentingOn === entry.data.entryId ? null : entry.data.entryId)}
-                  className="hover:text-gray-700 dark:hover:text-gray-300"
+                  className="hover:text-sage-700"
                 >
                   {entry.data.commentCount} comment{entry.data.commentCount !== 1 ? "s" : ""}
                 </button>

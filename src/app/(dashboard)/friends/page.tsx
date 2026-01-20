@@ -162,14 +162,14 @@ export default function FriendsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Friends</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Friends</h1>
+        <p className="text-sage-600 mt-1">
           Connect with other pushup enthusiasts
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-2 border-b border-sage-200">
         {[
           { id: "friends" as const, label: "Friends", count: friends.length },
           { id: "requests" as const, label: "Requests", count: requests.length },
@@ -180,8 +180,8 @@ export default function FriendsPage() {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors flex items-center gap-2 ${
               activeTab === tab.id
-                ? "border-primary-600 text-primary-600"
-                : "border-transparent text-gray-500 hover:text-gray-700"
+                ? "border-primary-600 text-sage-600"
+                : "border-transparent text-sage-500 hover:text-sage-700"
             }`}
           >
             {tab.label}
@@ -198,25 +198,25 @@ export default function FriendsPage() {
       {activeTab === "friends" && (
         <Card>
           {friends.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-sage-500">
               <p>No friends yet.</p>
               <p className="text-sm mt-1">Search for users to add as friends!</p>
             </div>
           ) : (
             <div className="space-y-3">
               {friends.map((friend) => (
-                <div key={friend.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                <div key={friend.id} className="flex items-center justify-between p-3 rounded-lg bg-sage-50">
                   <Link href={`/profile/${friend.user.id}`} className="flex items-center gap-3 hover:underline">
-                    <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                      <span className="text-primary-600 dark:text-primary-400 font-medium">
+                    <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
+                      <span className="text-sage-600 font-medium">
                         {(friend.user.displayName || friend.user.username).charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
+                      <p className="font-medium text-foreground">
                         {friend.user.displayName || friend.user.username}
                       </p>
-                      <p className="text-xs text-gray-500">Level {friend.user.level}</p>
+                      <p className="text-xs text-sage-500">Level {friend.user.level}</p>
                     </div>
                   </Link>
                   <Button
@@ -238,24 +238,24 @@ export default function FriendsPage() {
       {activeTab === "requests" && (
         <Card>
           {requests.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
+            <div className="text-center py-8 text-sage-500">
               No pending friend requests.
             </div>
           ) : (
             <div className="space-y-3">
               {requests.map((request) => (
-                <div key={request.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                <div key={request.id} className="flex items-center justify-between p-3 rounded-lg bg-sage-50">
                   <Link href={`/profile/${request.user.id}`} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                      <span className="text-primary-600 dark:text-primary-400 font-medium">
+                    <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
+                      <span className="text-sage-600 font-medium">
                         {(request.user.displayName || request.user.username).charAt(0).toUpperCase()}
                       </span>
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
+                      <p className="font-medium text-foreground">
                         {request.user.displayName || request.user.username}
                       </p>
-                      <p className="text-xs text-gray-500">Level {request.user.level}</p>
+                      <p className="text-xs text-sage-500">Level {request.user.level}</p>
                     </div>
                   </Link>
                   <div className="flex gap-2">
@@ -283,28 +283,28 @@ export default function FriendsPage() {
           />
           <Card>
             {searchQuery.length < 2 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-sage-500">
                 Enter at least 2 characters to search
               </div>
             ) : searchResults.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-sage-500">
                 No users found
               </div>
             ) : (
               <div className="space-y-3">
                 {searchResults.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50">
+                  <div key={user.id} className="flex items-center justify-between p-3 rounded-lg bg-sage-50">
                     <Link href={`/profile/${user.id}`} className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                        <span className="text-primary-600 dark:text-primary-400 font-medium">
+                      <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
+                        <span className="text-sage-600 font-medium">
                           {(user.displayName || user.username).charAt(0).toUpperCase()}
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900 dark:text-white">
+                        <p className="font-medium text-foreground">
                           {user.displayName || user.username}
                         </p>
-                        <p className="text-xs text-gray-500">Level {user.level}</p>
+                        <p className="text-xs text-sage-500">Level {user.level}</p>
                       </div>
                     </Link>
                     {user.friendshipStatus?.status === "accepted" ? (

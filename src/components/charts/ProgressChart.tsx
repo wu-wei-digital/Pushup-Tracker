@@ -42,17 +42,17 @@ export default function ProgressChart({ data, days = 30 }: ProgressChartProps) {
     <div className="h-64 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200 dark:stroke-gray-700" />
+          <CartesianGrid strokeDasharray="3 3" className="stroke-gray-200" />
           <XAxis
             dataKey="date"
             tick={{ fontSize: 12 }}
-            className="text-gray-500 dark:text-gray-400"
+            className="text-gray-500"
             tickLine={false}
             axisLine={false}
           />
           <YAxis
             tick={{ fontSize: 12 }}
-            className="text-gray-500 dark:text-gray-400"
+            className="text-gray-500"
             tickLine={false}
             axisLine={false}
             width={40}

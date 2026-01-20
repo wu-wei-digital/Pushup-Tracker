@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,6 +10,19 @@ const config: Config = {
     extend: {
       colors: {
         // Wu Wei Digital Brand Colors
+        // Primary is an alias for sage for compatibility
+        primary: {
+          50: "#F2F5F2",
+          100: "#E5EBE6",
+          200: "#C8D6CA",
+          300: "#A8BFAC",
+          400: "#89A88E",
+          500: "#6B8F71",
+          600: "#567358",
+          700: "#415742",
+          800: "#2C3A2D",
+          900: "#171D17",
+        },
         sage: {
           50: "#F2F5F2",
           100: "#E5EBE6",

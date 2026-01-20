@@ -36,18 +36,18 @@ export default function LeaderboardTable({
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-gray-200 dark:border-gray-700">
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <tr className="border-b border-gray-200">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Rank
               </th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 User
               </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Total
               </th>
               {showPercentage && (
-                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Progress
                 </th>
               )}
@@ -65,7 +65,7 @@ export default function LeaderboardTable({
 
   if (entries.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+      <div className="text-center py-8 text-gray-500">
         No users found.
       </div>
     );
@@ -75,24 +75,24 @@ export default function LeaderboardTable({
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-gray-200 dark:border-gray-700">
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+          <tr className="border-b border-gray-200">
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Rank
             </th>
-            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               User
             </th>
-            <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
               Total
             </th>
             {showPercentage && (
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Progress
               </th>
             )}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="divide-y divide-gray-200">
           {entries.map((entry) => {
             const isCurrentUser = entry.user.id === currentUserId;
             const medal = getMedalEmoji(entry.rank);
@@ -103,8 +103,8 @@ export default function LeaderboardTable({
                 className={clsx(
                   "transition-colors",
                   isCurrentUser
-                    ? "bg-primary-50 dark:bg-primary-900/20"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                    ? "bg-primary-50"
+                    : "hover:bg-gray-50"
                 )}
               >
                 <td className="px-4 py-3 whitespace-nowrap">
@@ -112,7 +112,7 @@ export default function LeaderboardTable({
                     {medal ? (
                       <span className="text-xl">{medal}</span>
                     ) : (
-                      <span className="text-gray-500 dark:text-gray-400 font-medium w-6 text-center">
+                      <span className="text-gray-500 font-medium w-6 text-center">
                         {entry.rank}
                       </span>
                     )}
@@ -123,8 +123,8 @@ export default function LeaderboardTable({
                     href={`/profile/${entry.user.id}`}
                     className="flex items-center gap-3 hover:underline"
                   >
-                    <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-                      <span className="text-primary-600 dark:text-primary-400 font-medium text-sm">
+                    <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+                      <span className="text-primary-600 font-medium text-sm">
                         {(entry.user.displayName || entry.user.username).charAt(0).toUpperCase()}
                       </span>
                     </div>
@@ -133,14 +133,14 @@ export default function LeaderboardTable({
                         className={clsx(
                           "font-medium",
                           isCurrentUser
-                            ? "text-primary-600 dark:text-primary-400"
-                            : "text-gray-900 dark:text-white"
+                            ? "text-primary-600"
+                            : "text-gray-900"
                         )}
                       >
                         {entry.user.displayName || entry.user.username}
                         {isCurrentUser && " (You)"}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-gray-500">
                         Lvl {entry.user.level}
                         {entry.user.currentTitle && ` · ${entry.user.currentTitle}`}
                       </p>
@@ -148,7 +148,7 @@ export default function LeaderboardTable({
                   </Link>
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-right">
-                  <span className="font-bold text-gray-900 dark:text-white">
+                  <span className="font-bold text-gray-900">
                     {entry.total.toLocaleString()}
                   </span>
                 </td>
@@ -158,8 +158,8 @@ export default function LeaderboardTable({
                       className={clsx(
                         "font-medium",
                         entry.percentComplete >= 100
-                          ? "text-green-600 dark:text-green-400"
-                          : "text-gray-600 dark:text-gray-400"
+                          ? "text-green-600"
+                          : "text-gray-600"
                       )}
                     >
                       {entry.percentComplete.toFixed(1)}%

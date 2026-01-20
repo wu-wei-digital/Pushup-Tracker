@@ -20,8 +20,8 @@ export default function DashboardPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div className="h-8 w-48 bg-sage-200 dark:bg-sage-800 rounded animate-pulse" />
-          <div className="h-10 w-32 bg-sage-200 dark:bg-sage-800 rounded animate-pulse" />
+          <div className="h-8 w-48 bg-sage-200 rounded animate-pulse" />
+          <div className="h-10 w-32 bg-sage-200 rounded animate-pulse" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <CardSkeleton />
@@ -45,10 +45,10 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-display font-bold text-foreground">
             Welcome back, {user?.displayName || user?.username}!
           </h1>
-          <p className="text-sage-600 dark:text-sage-400 mt-1">
+          <p className="text-sage-600 mt-1">
             {user?.currentTitle && (
               <span className="inline-flex items-center gap-1">
-                <span className="text-sage-700 dark:text-sage-300 font-medium">
+                <span className="text-sage-700 font-medium">
                   {user.currentTitle}
                 </span>
                 <span className="mx-1">·</span>
@@ -101,27 +101,27 @@ export default function DashboardPage() {
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Link href="/leaderboard">
-            <div className="p-4 rounded-xl bg-sage-50 dark:bg-sage-800/50 hover:bg-sage-100 dark:hover:bg-sage-800 transition-colors text-center">
+            <div className="p-4 rounded-xl bg-sage-50 hover:bg-sage-100 transition-colors text-center">
               <div className="text-2xl mb-2">🏆</div>
-              <p className="text-sm font-medium text-sage-700 dark:text-sage-300">Leaderboard</p>
+              <p className="text-sm font-medium text-sage-700">Leaderboard</p>
             </div>
           </Link>
           <Link href="/achievements">
-            <div className="p-4 rounded-xl bg-sage-50 dark:bg-sage-800/50 hover:bg-sage-100 dark:hover:bg-sage-800 transition-colors text-center">
+            <div className="p-4 rounded-xl bg-sage-50 hover:bg-sage-100 transition-colors text-center">
               <div className="text-2xl mb-2">🏅</div>
-              <p className="text-sm font-medium text-sage-700 dark:text-sage-300">Achievements</p>
+              <p className="text-sm font-medium text-sage-700">Achievements</p>
             </div>
           </Link>
           <Link href="/challenges">
-            <div className="p-4 rounded-xl bg-sage-50 dark:bg-sage-800/50 hover:bg-sage-100 dark:hover:bg-sage-800 transition-colors text-center">
+            <div className="p-4 rounded-xl bg-sage-50 hover:bg-sage-100 transition-colors text-center">
               <div className="text-2xl mb-2">🎯</div>
-              <p className="text-sm font-medium text-sage-700 dark:text-sage-300">Challenges</p>
+              <p className="text-sm font-medium text-sage-700">Challenges</p>
             </div>
           </Link>
           <Link href="/friends">
-            <div className="p-4 rounded-xl bg-sage-50 dark:bg-sage-800/50 hover:bg-sage-100 dark:hover:bg-sage-800 transition-colors text-center">
+            <div className="p-4 rounded-xl bg-sage-50 hover:bg-sage-100 transition-colors text-center">
               <div className="text-2xl mb-2">👥</div>
-              <p className="text-sm font-medium text-sage-700 dark:text-sage-300">Friends</p>
+              <p className="text-sm font-medium text-sage-700">Friends</p>
             </div>
           </Link>
         </div>

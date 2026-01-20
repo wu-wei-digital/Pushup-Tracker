@@ -106,8 +106,8 @@ export default function ChallengesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Challenges</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Compete with others</p>
+          <h1 className="text-2xl font-bold text-foreground">Challenges</h1>
+          <p className="text-sage-600 mt-1">Compete with others</p>
         </div>
         <Button onClick={() => setShowCreate(true)}>Create Challenge</Button>
       </div>
@@ -132,15 +132,15 @@ export default function ChallengesPage() {
           {[1, 2, 3].map((i) => (
             <Card key={i}>
               <div className="animate-pulse">
-                <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-                <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
+                <div className="h-6 w-48 bg-sage-200 rounded mb-2" />
+                <div className="h-4 w-32 bg-sage-200 rounded" />
               </div>
             </Card>
           ))}
         </div>
       ) : challenges.length === 0 ? (
         <Card>
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-sage-500">
             No challenges found. Create one!
           </div>
         </Card>
@@ -153,17 +153,17 @@ export default function ChallengesPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
+                      <h3 className="font-semibold text-foreground">
                         {challenge.name}
                       </h3>
                       <Badge variant={status.variant} size="sm">{status.label}</Badge>
                     </div>
                     {challenge.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-sm text-sage-600 mb-2">
                         {challenge.description}
                       </p>
                     )}
-                    <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-4 text-xs text-sage-500">
                       <span>
                         {format(new Date(challenge.startDate), "MMM d")} - {format(new Date(challenge.endDate), "MMM d, yyyy")}
                       </span>
@@ -196,13 +196,13 @@ export default function ChallengesPage() {
             required
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            <label className="block text-sm font-medium text-sage-700 mb-1">
               Description
             </label>
             <textarea
               value={createForm.description}
               onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+              className="w-full px-3 py-2 border border-sage-300 rounded-lg bg-white bg-sage-800"
               rows={2}
             />
           </div>

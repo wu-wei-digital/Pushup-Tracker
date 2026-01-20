@@ -88,8 +88,8 @@ export default function TeamDetailPage() {
     return (
       <Card>
         <div className="text-center py-8">
-          <p className="text-gray-500">Team not found</p>
-          <Link href="/teams" className="text-primary-600 hover:underline mt-2 inline-block">
+          <p className="text-sage-500">Team not found</p>
+          <Link href="/teams" className="text-sage-600 hover:underline mt-2 inline-block">
             Back to Teams
           </Link>
         </div>
@@ -101,16 +101,16 @@ export default function TeamDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Link href="/teams" className="text-primary-600 dark:text-primary-400 hover:underline text-sm">
+      <Link href="/teams" className="text-sage-600 hover:underline text-sm">
         &larr; Back to Teams
       </Link>
 
       <Card>
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{team.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">{team.name}</h1>
             {team.description && (
-              <p className="text-gray-600 dark:text-gray-400 mt-1">{team.description}</p>
+              <p className="text-sage-600 mt-1">{team.description}</p>
             )}
           </div>
           {team.isJoined && (
@@ -123,7 +123,7 @@ export default function TeamDetailPage() {
         <div className="mb-6">
           <div className="flex justify-between mb-2">
             <span className="font-medium">Team Progress</span>
-            <span className="text-primary-600 dark:text-primary-400 font-bold">
+            <span className="text-sage-600 font-bold">
               {team.totalPushups.toLocaleString()} / {team.teamGoal.toLocaleString()}
             </span>
           </div>
@@ -145,7 +145,7 @@ export default function TeamDetailPage() {
       </Card>
 
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
           Members ({team.members.length})
         </h2>
         <div className="space-y-2">
@@ -154,8 +154,8 @@ export default function TeamDetailPage() {
               key={member.id}
               className={`flex items-center justify-between p-3 rounded-lg ${
                 member.userId === user?.id
-                  ? "bg-primary-50 dark:bg-primary-900/20"
-                  : "bg-gray-50 dark:bg-gray-800/50"
+                  ? "bg-primary-50"
+                  : "bg-sage-50"
               }`}
             >
               <div className="flex items-center gap-3">
@@ -163,7 +163,7 @@ export default function TeamDetailPage() {
                   {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
                 </span>
                 <Link href={`/profile/${member.userId}`} className="hover:underline">
-                  <span className="font-medium text-gray-900 dark:text-white">
+                  <span className="font-medium text-foreground">
                     {member.user.displayName || member.user.username}
                   </span>
                 </Link>
@@ -171,7 +171,7 @@ export default function TeamDetailPage() {
                   <Badge variant="primary" size="sm">Admin</Badge>
                 )}
               </div>
-              <span className="font-bold text-primary-600 dark:text-primary-400">
+              <span className="font-bold text-sage-600">
                 {member.totalPushups.toLocaleString()}
               </span>
             </div>

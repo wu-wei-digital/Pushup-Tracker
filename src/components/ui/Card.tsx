@@ -12,10 +12,10 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", padding = "md", hover = false, children, ...props }, ref) => {
     const variants = {
-      default: "bg-white dark:bg-sage-900 border border-sage-100 dark:border-sage-800 shadow-sm",
-      elevated: "bg-white dark:bg-sage-900 shadow-lg shadow-sage-500/10",
-      outlined: "bg-white dark:bg-sage-900 border-2 border-sage-200 dark:border-sage-700",
-      glass: "bg-white/80 dark:bg-sage-900/80 backdrop-blur-md border border-white/20 dark:border-sage-700/20",
+      default: "bg-white border border-sage-100 shadow-sm",
+      elevated: "bg-white shadow-lg shadow-sage-500/10",
+      outlined: "bg-white border-2 border-sage-200",
+      glass: "bg-white/80 backdrop-blur-md border border-white/20",
     };
 
     const paddings = {

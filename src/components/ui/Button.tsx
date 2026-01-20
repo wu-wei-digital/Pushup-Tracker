@@ -14,11 +14,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseStyles = "inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]";
 
     const variants = {
-      primary: "bg-sage-500 text-white hover:bg-sage-600 hover:shadow-lg hover:shadow-sage-500/25 focus:ring-sage-500 dark:bg-sage-600 dark:hover:bg-sage-500",
-      secondary: "bg-coral-500 text-white hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 focus:ring-coral-500 dark:bg-coral-600 dark:hover:bg-coral-500",
-      outline: "border-2 border-sage-500 text-sage-600 hover:bg-sage-500 hover:text-white focus:ring-sage-500 dark:border-sage-400 dark:text-sage-400 dark:hover:bg-sage-500 dark:hover:text-white",
-      ghost: "text-sage-600 hover:bg-sage-500/10 focus:ring-sage-500 dark:text-sage-400 dark:hover:bg-sage-500/20",
-      danger: "bg-coral-600 text-white hover:bg-coral-700 hover:shadow-lg hover:shadow-coral-600/25 focus:ring-coral-500 dark:bg-coral-500 dark:hover:bg-coral-600",
+      primary: "bg-sage-500 text-white hover:bg-sage-600 hover:shadow-lg hover:shadow-sage-500/25 focus:ring-sage-500",
+      secondary: "bg-coral-500 text-white hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 focus:ring-coral-500",
+      outline: "border-2 border-sage-500 text-sage-600 hover:bg-sage-500 hover:text-white focus:ring-sage-500",
+      ghost: "text-sage-600 hover:bg-sage-500/10 focus:ring-sage-500",
+      danger: "bg-coral-600 text-white hover:bg-coral-700 hover:shadow-lg hover:shadow-coral-600/25 focus:ring-coral-500",
     };
 
     const sizes = {

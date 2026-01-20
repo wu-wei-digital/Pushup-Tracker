@@ -47,10 +47,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
 function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   const variants = {
-    success: "bg-green-50 border-green-500 text-green-800 dark:bg-green-900/30 dark:text-green-200",
-    error: "bg-red-50 border-red-500 text-red-800 dark:bg-red-900/30 dark:text-red-200",
-    info: "bg-blue-50 border-blue-500 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200",
-    warning: "bg-yellow-50 border-yellow-500 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-200",
+    success: "bg-green-50 border-green-500 text-green-800",
+    error: "bg-red-50 border-red-500 text-red-800",
+    info: "bg-blue-50 border-blue-500 text-blue-800",
+    warning: "bg-yellow-50 border-yellow-500 text-yellow-800",
   };
 
   const icons = {
@@ -87,7 +87,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
       <p className="flex-1 text-sm font-medium">{toast.message}</p>
       <button
         onClick={onClose}
-        className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+        className="text-sage-400 hover:text-sage-500"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

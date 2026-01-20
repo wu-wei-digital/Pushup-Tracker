@@ -40,7 +40,7 @@ export default function LoginForm() {
         </h2>
 
         {error && (
-          <div className="p-3 rounded-lg bg-coral-50 dark:bg-coral-900/30 text-coral-600 dark:text-coral-400 text-sm">
+          <div className="p-3 rounded-lg bg-coral-50 text-coral-600 text-sm">
             {error}
           </div>
         )}
@@ -69,11 +69,11 @@ export default function LoginForm() {
           Sign In
         </Button>
 
-        <p className="text-center text-sm text-sage-600 dark:text-sage-400">
+        <p className="text-center text-sm text-sage-600">
           Don&apos;t have an account?{" "}
           <Link
             href="/register"
-            className="text-sage-700 dark:text-sage-300 hover:text-coral-500 dark:hover:text-coral-400 font-medium transition-colors"
+            className="text-sage-700 hover:text-coral-500 font-medium transition-colors"
           >
             Sign up
           </Link>

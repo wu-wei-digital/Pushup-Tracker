@@ -68,7 +68,7 @@ export default function TodayEntries({
 
   if (entries.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+      <div className="text-center py-8 text-gray-500">
         <p>No pushups logged today yet.</p>
         <p className="text-sm mt-1">Use the buttons above to start!</p>
       </div>
@@ -81,19 +81,19 @@ export default function TodayEntries({
         {entries.map((entry) => (
           <div
             key={entry.id}
-            className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center">
-                <span className="text-primary-600 dark:text-primary-400 font-bold">
+              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                <span className="text-primary-600 font-bold">
                   {entry.amount}
                 </span>
               </div>
               <div>
-                <p className="font-medium text-gray-900 dark:text-white">
+                <p className="font-medium text-gray-900">
                   {entry.amount} pushup{entry.amount !== 1 ? "s" : ""}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-gray-500">
                   {format(new Date(entry.createdAt), "h:mm a")}
                   {entry.note && <span className="ml-2">- {entry.note}</span>}
                 </p>
@@ -103,7 +103,7 @@ export default function TodayEntries({
             <div className="flex items-center gap-1">
               <button
                 onClick={() => handleEdit(entry)}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-200"
                 title="Edit"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@ export default function TodayEntries({
               </button>
               <button
                 onClick={() => setDeleteConfirm(entry.id)}
-                className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700"
+                className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-200"
                 title="Delete"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,7 +164,7 @@ export default function TodayEntries({
         title="Delete Entry"
         size="sm"
       >
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-gray-600 mb-4">
           Are you sure you want to delete this entry? This action cannot be undone.
         </p>
         <div className="flex justify-end gap-2">

@@ -51,12 +51,12 @@ export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
   }, [data]);
 
   const getColorClass = (total: number) => {
-    if (total === 0) return "bg-gray-100 dark:bg-gray-800";
+    if (total === 0) return "bg-gray-100";
     const intensity = total / maxValue;
-    if (intensity < 0.25) return "bg-green-200 dark:bg-green-900";
-    if (intensity < 0.5) return "bg-green-400 dark:bg-green-700";
-    if (intensity < 0.75) return "bg-green-500 dark:bg-green-600";
-    return "bg-green-600 dark:bg-green-500";
+    if (intensity < 0.25) return "bg-green-200";
+    if (intensity < 0.5) return "bg-green-400";
+    if (intensity < 0.75) return "bg-green-500";
+    return "bg-green-600";
   };
 
   const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -70,7 +70,7 @@ export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
             <div
               key={label}
               className={clsx(
-                "h-3 text-xs text-gray-400 dark:text-gray-500 leading-3",
+                "h-3 text-xs text-gray-400 leading-3",
                 i % 2 === 1 ? "invisible" : ""
               )}
             >
@@ -103,14 +103,14 @@ export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-end gap-2 mt-3 text-xs text-gray-500 dark:text-gray-400">
+      <div className="flex items-center justify-end gap-2 mt-3 text-xs text-gray-500">
         <span>Less</span>
         <div className="flex gap-1">
-          <div className="w-3 h-3 rounded-sm bg-gray-100 dark:bg-gray-800" />
-          <div className="w-3 h-3 rounded-sm bg-green-200 dark:bg-green-900" />
-          <div className="w-3 h-3 rounded-sm bg-green-400 dark:bg-green-700" />
-          <div className="w-3 h-3 rounded-sm bg-green-500 dark:bg-green-600" />
-          <div className="w-3 h-3 rounded-sm bg-green-600 dark:bg-green-500" />
+          <div className="w-3 h-3 rounded-sm bg-gray-100" />
+          <div className="w-3 h-3 rounded-sm bg-green-200" />
+          <div className="w-3 h-3 rounded-sm bg-green-400" />
+          <div className="w-3 h-3 rounded-sm bg-green-500" />
+          <div className="w-3 h-3 rounded-sm bg-green-600" />
         </div>
         <span>More</span>
       </div>

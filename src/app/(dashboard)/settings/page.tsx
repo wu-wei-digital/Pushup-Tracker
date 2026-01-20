@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { Card, Button, Input } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "@/contexts/ThemeContext";
 import { useToast } from "@/components/ui/Toast";
 
 export default function SettingsPage() {
   const { user, refreshUser, logout } = useAuth();
-  const { theme, setTheme } = useTheme();
   const { showToast } = useToast();
   const [yearlyGoal, setYearlyGoal] = useState(user?.yearlyGoal?.toString() || "10000");
   const [isUpdating, setIsUpdating] = useState(false);
@@ -35,41 +33,11 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Settings</h1>
-
-      {/* Theme */}
-      <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Appearance
-        </h2>
-        <div className="space-y-3">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Choose your preferred theme
-          </p>
-          <div className="flex gap-3">
-            {(["light", "dark", "system"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setTheme(t)}
-                className={`flex-1 p-4 rounded-lg border-2 transition-colors ${
-                  theme === t
-                    ? "border-primary-600 bg-primary-50 dark:bg-primary-900/20"
-                    : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
-                }`}
-              >
-                <div className="text-2xl mb-2">
-                  {t === "light" ? "☀️" : t === "dark" ? "🌙" : "💻"}
-                </div>
-                <div className="text-sm font-medium capitalize">{t}</div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </Card>
+      <h1 className="text-2xl font-bold text-foreground">Settings</h1>
 
       {/* Goal */}
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
           Yearly Goal
         </h2>
         <div className="flex gap-3">
@@ -85,30 +53,30 @@ export default function SettingsPage() {
             Save
           </Button>
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        <p className="text-sm text-sage-500 mt-2">
           This is your target number of pushups for the year
         </p>
       </Card>
 
       {/* Account */}
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-foreground mb-4">
           Account
         </h2>
         <div className="space-y-4">
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Username</p>
-            <p className="font-medium text-gray-900 dark:text-white">
+            <p className="text-sm text-sage-600">Username</p>
+            <p className="font-medium text-foreground">
               {user?.username}
             </p>
           </div>
           <div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Email</p>
-            <p className="font-medium text-gray-900 dark:text-white">
+            <p className="text-sm text-sage-600">Email</p>
+            <p className="font-medium text-foreground">
               {user?.email}
             </p>
           </div>
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-sage-200">
             <Button variant="danger" onClick={logout}>
               Log Out
             </Button>

@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl h-96" />}>
+    <Suspense fallback={<div className="animate-pulse bg-sage-200 rounded-xl h-96" />}>
       <LoginForm />
     </Suspense>
   );

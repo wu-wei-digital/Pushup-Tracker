@@ -28,17 +28,17 @@ export default function ProgressBar({
   };
 
   const colors = {
-    primary: "bg-sage-500 dark:bg-sage-400",
-    success: "bg-sage-600 dark:bg-sage-500",
-    warning: "bg-amber-400 dark:bg-amber-300",
-    danger: "bg-coral-500 dark:bg-coral-400",
+    primary: "bg-sage-500",
+    success: "bg-sage-600",
+    warning: "bg-amber-400",
+    danger: "bg-coral-500",
   };
 
   return (
     <div className={clsx("w-full", className)}>
       <div
         className={clsx(
-          "w-full bg-sage-100 dark:bg-sage-800 rounded-full overflow-hidden",
+          "w-full bg-sage-100 rounded-full overflow-hidden",
           sizes[size]
         )}
       >
@@ -51,7 +51,7 @@ export default function ProgressBar({
         />
       </div>
       {showLabel && (
-        <div className="mt-1 text-sm text-sage-600 dark:text-sage-400 text-right">
+        <div className="mt-1 text-sm text-sage-600 text-right">
           {percentage.toFixed(1)}%
         </div>
       )}

@@ -39,7 +39,7 @@ export default function Modal({
       <div className="flex min-h-full items-center justify-center p-4">
         <div
           className={clsx(
-            "relative w-full transform rounded-xl bg-white dark:bg-gray-800 p-6 shadow-xl transition-all",
+            "relative w-full transform rounded-xl bg-white p-6 shadow-xl transition-all",
             sizes[size]
           )}
           onClick={(e) => e.stopPropagation()}
@@ -47,12 +47,12 @@ export default function Modal({
           {/* Header */}
           {title && (
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 {title}
               </h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300"
+                className="text-sage-400 hover:text-sage-500"
               >
                 <svg
                   className="w-5 h-5"

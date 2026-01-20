@@ -74,7 +74,7 @@ export default function NotificationBell() {
     return (
         <Link
             href="/notifications"
-            className="relative p-2 rounded-lg text-sage-500 hover:bg-sage-100 dark:text-sage-400 dark:hover:bg-sage-800 transition-colors"
+            className="relative p-2 rounded-lg text-sage-500 hover:bg-sage-100 transition-colors"
         >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path

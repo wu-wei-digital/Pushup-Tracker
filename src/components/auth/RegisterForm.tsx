@@ -70,12 +70,12 @@ export default function RegisterForm() {
   return (
     <Card variant="outlined" padding="lg">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white text-center">
+        <h2 className="text-xl font-semibold text-gray-900 text-center">
           Create your account
         </h2>
 
         {errors.form && (
-          <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-sm">
+          <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">
             {errors.form}
           </div>
         )}
@@ -129,11 +129,11 @@ export default function RegisterForm() {
           Create Account
         </Button>
 
-        <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+        <p className="text-center text-sm text-gray-600">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+            className="text-primary-600 hover:underline font-medium"
           >
             Sign in
           </Link>

@@ -86,8 +86,8 @@ export default function TeamsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Teams</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Work together towards shared goals</p>
+          <h1 className="text-2xl font-bold text-foreground">Teams</h1>
+          <p className="text-sage-600 mt-1">Work together towards shared goals</p>
         </div>
         <Button onClick={() => setShowCreate(true)}>Create Team</Button>
       </div>
@@ -109,7 +109,7 @@ export default function TeamsPage() {
         </div>
       ) : teams.length === 0 ? (
         <Card>
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-sage-500">
             No teams found. Create one!
           </div>
         </Card>
@@ -119,9 +119,9 @@ export default function TeamsPage() {
             <Card key={team.id}>
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">{team.name}</h3>
+                  <h3 className="font-semibold text-foreground">{team.name}</h3>
                   {team.description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{team.description}</p>
+                    <p className="text-sm text-sage-600">{team.description}</p>
                   )}
                 </div>
                 {team.isJoined && (
@@ -133,7 +133,7 @@ export default function TeamsPage() {
 
               <div className="mb-4">
                 <div className="flex justify-between text-sm mb-1">
-                  <span className="text-gray-600 dark:text-gray-400">Team Progress</span>
+                  <span className="text-sage-600">Team Progress</span>
                   <span className="font-medium">{team.totalPushups.toLocaleString()} / {team.teamGoal.toLocaleString()}</span>
                 </div>
                 <ProgressBar
@@ -143,7 +143,7 @@ export default function TeamsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">{team.memberCount} members</span>
+                <span className="text-sm text-sage-500">{team.memberCount} members</span>
                 <div className="flex gap-2">
                   <Link href={`/teams/${team.id}`}>
                     <Button variant="outline" size="sm">View</Button>
@@ -167,13 +167,13 @@ export default function TeamsPage() {
             required
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            <label className="block text-sm font-medium text-sage-700 mb-1">
               Description
             </label>
             <textarea
               value={createForm.description}
               onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800"
+              className="w-full px-3 py-2 border border-sage-300 rounded-lg bg-white bg-sage-800"
               rows={2}
             />
           </div>

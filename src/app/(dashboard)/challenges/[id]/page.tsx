@@ -86,8 +86,8 @@ export default function ChallengeDetailPage() {
     return (
       <Card>
         <div className="text-center py-8">
-          <p className="text-gray-500">Challenge not found</p>
-          <Link href="/challenges" className="text-primary-600 hover:underline mt-2 inline-block">
+          <p className="text-sage-500">Challenge not found</p>
+          <Link href="/challenges" className="text-sage-600 hover:underline mt-2 inline-block">
             Back to Challenges
           </Link>
         </div>
@@ -101,16 +101,16 @@ export default function ChallengeDetailPage() {
 
   return (
     <div className="space-y-6">
-      <Link href="/challenges" className="text-primary-600 dark:text-primary-400 hover:underline text-sm">
+      <Link href="/challenges" className="text-sage-600 hover:underline text-sm">
         &larr; Back to Challenges
       </Link>
 
       <Card>
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{challenge.name}</h1>
+            <h1 className="text-2xl font-bold text-foreground">{challenge.name}</h1>
             {challenge.description && (
-              <p className="text-gray-600 dark:text-gray-400 mt-1">{challenge.description}</p>
+              <p className="text-sage-600 mt-1">{challenge.description}</p>
             )}
           </div>
           <Badge variant={isActive ? "success" : hasEnded ? "default" : "info"}>
@@ -119,21 +119,21 @@ export default function ChallengeDetailPage() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-sm text-gray-500">Start</p>
+          <div className="text-center p-3 bg-sage-50 rounded-lg">
+            <p className="text-sm text-sage-500">Start</p>
             <p className="font-semibold">{format(new Date(challenge.startDate), "MMM d, yyyy")}</p>
           </div>
-          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-sm text-gray-500">End</p>
+          <div className="text-center p-3 bg-sage-50 rounded-lg">
+            <p className="text-sm text-sage-500">End</p>
             <p className="font-semibold">{format(new Date(challenge.endDate), "MMM d, yyyy")}</p>
           </div>
-          <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-sm text-gray-500">Participants</p>
+          <div className="text-center p-3 bg-sage-50 rounded-lg">
+            <p className="text-sm text-sage-500">Participants</p>
             <p className="font-semibold">{challenge.participants.length}</p>
           </div>
           {challenge.targetAmount && (
-            <div className="text-center p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-              <p className="text-sm text-gray-500">Target</p>
+            <div className="text-center p-3 bg-sage-50 rounded-lg">
+              <p className="text-sm text-sage-500">Target</p>
               <p className="font-semibold">{challenge.targetAmount.toLocaleString()}</p>
             </div>
           )}
@@ -152,9 +152,9 @@ export default function ChallengeDetailPage() {
 
       {/* Leaderboard */}
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Leaderboard</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Leaderboard</h2>
         {challenge.participants.length === 0 ? (
-          <p className="text-gray-500 text-center py-4">No participants yet</p>
+          <p className="text-sage-500 text-center py-4">No participants yet</p>
         ) : (
           <div className="space-y-2">
             {challenge.participants.map((participant, index) => (
@@ -162,8 +162,8 @@ export default function ChallengeDetailPage() {
                 key={participant.id}
                 className={`flex items-center justify-between p-3 rounded-lg ${
                   participant.userId === user?.id
-                    ? "bg-primary-50 dark:bg-primary-900/20"
-                    : "bg-gray-50 dark:bg-gray-800/50"
+                    ? "bg-primary-50"
+                    : "bg-sage-50"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -171,12 +171,12 @@ export default function ChallengeDetailPage() {
                     {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
                   </span>
                   <Link href={`/profile/${participant.userId}`} className="hover:underline">
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <span className="font-medium text-foreground">
                       {participant.user.displayName || participant.user.username}
                     </span>
                   </Link>
                 </div>
-                <span className="font-bold text-primary-600 dark:text-primary-400">
+                <span className="font-bold text-sage-600">
                   {participant.totalPushups.toLocaleString()}
                 </span>
               </div>

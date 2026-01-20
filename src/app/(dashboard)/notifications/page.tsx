@@ -64,7 +64,7 @@ export default function NotificationsPage() {
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-foreground">Notifications</h1>
-                    <p className="text-sage-600 dark:text-sage-400 mt-1">
+                    <p className="text-sage-600 mt-1">
                         {unreadCount > 0 ? `${unreadCount} unread` : "All caught up!"}
                     </p>
                 </div>
@@ -80,7 +80,7 @@ export default function NotificationsPage() {
                 </div>
             ) : notifications.length === 0 ? (
                 <Card>
-                    <div className="text-center py-8 text-sage-500 dark:text-sage-400">
+                    <div className="text-center py-8 text-sage-500">
                         <div className="text-4xl mb-2">🔔</div>
                         <p>No notifications yet</p>
                     </div>
@@ -91,7 +91,7 @@ export default function NotificationsPage() {
                         <Card
                             key={notification.id}
                             className={`transition-colors ${
-                                !notification.isRead ? "bg-sage-50 dark:bg-sage-800/50" : ""
+                                !notification.isRead ? "bg-sage-50" : ""
                             }`}
                             padding="sm"
                         >
@@ -102,12 +102,12 @@ export default function NotificationsPage() {
                                         <h3 className="font-medium text-foreground">
                                             {notification.title}
                                         </h3>
-                                        <span className="text-xs text-sage-500 dark:text-sage-400 whitespace-nowrap">
+                                        <span className="text-xs text-sage-500 whitespace-nowrap">
                                             {formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}
                                         </span>
                                     </div>
                                     {notification.content && (
-                                        <p className="text-sm text-sage-600 dark:text-sage-400 mt-1">
+                                        <p className="text-sm text-sage-600 mt-1">
                                             {notification.content}
                                         </p>
                                     )}

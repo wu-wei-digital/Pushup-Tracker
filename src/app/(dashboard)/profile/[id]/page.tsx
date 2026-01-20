@@ -107,9 +107,9 @@ export default function UserProfilePage() {
       <div className="max-w-2xl mx-auto">
         <Card>
           <div className="animate-pulse flex flex-col items-center">
-            <div className="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full mb-4" />
-            <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-            <div className="h-4 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
+            <div className="w-24 h-24 bg-gray-200 rounded-full mb-4" />
+            <div className="h-6 w-32 bg-gray-200 rounded mb-2" />
+            <div className="h-4 w-24 bg-gray-200 rounded" />
           </div>
         </Card>
       </div>
@@ -119,8 +119,8 @@ export default function UserProfilePage() {
   if (!profile) {
     return (
       <div className="max-w-2xl mx-auto text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">User not found</p>
-        <Link href="/leaderboard" className="text-primary-600 dark:text-primary-400 hover:underline mt-4 inline-block">
+        <p className="text-gray-500">User not found</p>
+        <Link href="/leaderboard" className="text-primary-600 hover:underline mt-4 inline-block">
           Back to Leaderboard
         </Link>
       </div>
@@ -173,16 +173,16 @@ export default function UserProfilePage() {
       <Card>
         <div className="flex flex-col items-center text-center">
           {/* Avatar */}
-          <div className="w-24 h-24 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center mb-4">
-            <span className="text-primary-600 dark:text-primary-400 font-bold text-4xl">
+          <div className="w-24 h-24 rounded-full bg-primary-100 flex items-center justify-center mb-4">
+            <span className="text-primary-600 font-bold text-4xl">
               {(user.displayName || user.username).charAt(0).toUpperCase()}
             </span>
           </div>
 
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-bold text-gray-900">
             {user.displayName || user.username}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400">@{user.username}</p>
+          <p className="text-gray-500">@{user.username}</p>
 
           <div className="flex items-center gap-2 mt-2">
             <Badge variant="primary">Level {user.level}</Badge>
@@ -190,10 +190,10 @@ export default function UserProfilePage() {
           </div>
 
           {user.bio && (
-            <p className="text-gray-600 dark:text-gray-400 mt-4 max-w-md">{user.bio}</p>
+            <p className="text-gray-600 mt-4 max-w-md">{user.bio}</p>
           )}
 
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+          <p className="text-sm text-gray-500 mt-4">
             {user.points.toLocaleString()} XP
           </p>
 
@@ -203,29 +203,29 @@ export default function UserProfilePage() {
 
       {/* Stats */}
       <Card>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Stats</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Stats</h3>
         <div className="grid grid-cols-2 gap-4">
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <p className="text-2xl font-bold text-gray-900">
               {stats.totalPushups.toLocaleString()}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Total Pushups</p>
+            <p className="text-sm text-gray-500">Total Pushups</p>
           </div>
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <p className="text-2xl font-bold text-gray-900">
               {stats.yearTotal.toLocaleString()}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">This Year</p>
+            <p className="text-sm text-gray-500">This Year</p>
           </div>
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.currentStreak}</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Current Streak</p>
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <p className="text-2xl font-bold text-gray-900">{stats.currentStreak}</p>
+            <p className="text-sm text-gray-500">Current Streak</p>
           </div>
-          <div className="text-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <p className="text-2xl font-bold text-gray-900">
               {stats.achievementsCount}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Achievements</p>
+            <p className="text-sm text-gray-500">Achievements</p>
           </div>
         </div>
       </Card>
