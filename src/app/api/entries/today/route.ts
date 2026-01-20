@@ -4,31 +4,38 @@ import { getCurrentUser } from "@/lib/auth";
 import { getTodayBounds } from "@/lib/calculations";
 
 export async function GET() {
-  try {
-    const payload = await getCurrentUser();
-    if (!payload) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    try {
+        const payload = await getCurrentUser();
+        if (!payload) {
+            return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+        }
+
+        // Get user's timezone
+        const user = await prisma.user.findUnique({
+            where: { id: payload.userId },
+            select: { timezone: true },
+        });
+
+        const userTimezone = user?.timezone || "UTC";
+        const { start, end } = getTodayBounds(userTimezone);
+
+        const entries = await prisma.pushupEntry.findMany({
+            where: {
+                userId: payload.userId,
+                isDeleted: false,
+                createdAt: {
+                    gte: start,
+                    lte: end,
+                },
+            },
+            orderBy: { createdAt: "desc" },
+        });
+
+        const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
+
+        return NextResponse.json({ entries, total });
+    } catch (error) {
+        console.error("Get today entries error:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
-
-    const { start, end } = getTodayBounds();
-
-    const entries = await prisma.pushupEntry.findMany({
-      where: {
-        userId: payload.userId,
-        isDeleted: false,
-        createdAt: {
-          gte: start,
-          lte: end,
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    const total = entries.reduce((sum, entry) => sum + entry.amount, 0);
-
-    return NextResponse.json({ entries, total });
-  } catch (error) {
-    console.error("Get today entries error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-  }
 }
