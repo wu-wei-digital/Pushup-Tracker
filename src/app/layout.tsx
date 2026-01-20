@@ -23,6 +23,28 @@ export const metadata: Metadata = {
     icon: "/pushup-tracker-logo-light.png",
     apple: "/pushup-tracker-logo-light.png",
   },
+  openGraph: {
+    title: "Pushup Tracker | Wu Wei Digital",
+    description: "Social, gamified pushup tracking app with challenges, achievements, and friends",
+    url: "https://pushups.wuwei.digital",
+    siteName: "Pushup Tracker",
+    images: [
+      {
+        url: "/Pushup%20Tracker%20OG%20image.png",
+        width: 1200,
+        height: 630,
+        alt: "Pushup Tracker - Track your progress, compete with friends",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pushup Tracker | Wu Wei Digital",
+    description: "Social, gamified pushup tracking app with challenges, achievements, and friends",
+    images: ["/Pushup%20Tracker%20OG%20image.png"],
+  },
 };
 
 export default function RootLayout({
