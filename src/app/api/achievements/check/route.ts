@@ -18,7 +18,7 @@ export async function POST() {
     // Get user data
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { level: true, points: true },
+      select: { level: true, points: true, timezone: true },
     });
 
     if (!user) {
@@ -33,9 +33,10 @@ export async function POST() {
     const existingBadgeTypes = existingAchievements.map((a) => a.badgeType);
 
     // Calculate stats
+    const userTimezone = user.timezone || "Australia/Brisbane";
     const yearStart = startOfYear(new Date());
-    const { start: todayStart, end: todayEnd } = getTodayBounds();
-    const { start: weekStart, end: weekEnd } = getWeekBounds();
+    const { start: todayStart, end: todayEnd } = getTodayBounds(userTimezone);
+    const { start: weekStart, end: weekEnd } = getWeekBounds(userTimezone);
 
     const entries = await prisma.pushupEntry.findMany({
       where: { userId, isDeleted: false },
@@ -49,7 +50,7 @@ export async function POST() {
     const totalPushups = entries.reduce((sum, e) => sum + e.amount, 0);
     const todayTotal = todayEntries.reduce((sum, e) => sum + e.amount, 0);
     const weekTotal = weekEntries.reduce((sum, e) => sum + e.amount, 0);
-    const { current: currentStreak, longest: longestStreak } = calculateStreak(entries.map((e) => e.createdAt));
+    const { current: currentStreak, longest: longestStreak } = calculateStreak(entries.map((e) => e.createdAt), userTimezone);
     const singleEntryMax = Math.max(...entries.map((e) => e.amount), 0);
 
     // Get friend count

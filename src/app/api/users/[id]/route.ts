@@ -26,6 +26,7 @@ export async function GET(
         displayName: true,
         bio: true,
         yearlyGoal: true,
+        timezone: true,
         points: true,
         level: true,
         currentTitle: true,
@@ -50,8 +51,10 @@ export async function GET(
     });
 
     const yearTotal = yearEntries.reduce((sum, e) => sum + e.amount, 0);
+    const userTimezone = user.timezone || "Australia/Brisbane";
     const { current: currentStreak, longest: longestStreak } = calculateStreak(
-      yearEntries.map((e) => e.createdAt)
+      yearEntries.map((e) => e.createdAt),
+      userTimezone
     );
 
     // Get total pushups (all time)

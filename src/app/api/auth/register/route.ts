@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { username, email, password } = validation.data;
+    const { username, email, password, timezone } = validation.data;
 
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
         email,
         passwordHash,
         displayName: username,
+        ...(timezone && { timezone }),
       },
       select: {
         id: true,

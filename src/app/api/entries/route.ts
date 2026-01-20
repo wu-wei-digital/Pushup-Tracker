@@ -73,8 +73,15 @@ export async function POST(request: NextRequest) {
 
     const { amount, note } = validation.data;
 
+    // Get user's timezone
+    const userRecord = await prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { timezone: true },
+    });
+    const userTimezone = userRecord?.timezone || "Australia/Brisbane";
+
     // Check if this is the first entry of the day
-    const { start: todayStart, end: todayEnd } = getTodayBounds();
+    const { start: todayStart, end: todayEnd } = getTodayBounds(userTimezone);
     const todayEntries = await prisma.pushupEntry.findFirst({
       where: {
         userId: payload.userId,
@@ -97,7 +104,7 @@ export async function POST(request: NextRequest) {
       },
       select: { createdAt: true },
     });
-    const { current: currentStreak } = calculateStreak(allEntryDates.map(e => e.createdAt));
+    const { current: currentStreak } = calculateStreak(allEntryDates.map(e => e.createdAt), userTimezone);
 
     // Calculate points
     const pointsEarned = calculatePushupPoints(amount, isFirstOfDay, currentStreak);
@@ -148,7 +155,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Check for achievements
-    const { start: todayStartAch, end: todayEndAch } = getTodayBounds();
+    const { start: todayStartAch, end: todayEndAch } = getTodayBounds(userTimezone);
     const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
     const monthStart = startOfMonth(new Date());
 
@@ -232,7 +239,7 @@ export async function POST(request: NextRequest) {
       select: { createdAt: true },
       orderBy: { createdAt: "asc" },
     });
-    const streakInfo = calculateStreak(allDatesForStreak.map(e => e.createdAt));
+    const streakInfo = calculateStreak(allDatesForStreak.map(e => e.createdAt), userTimezone);
 
     // Count unique days with entries
     const uniqueDays = new Set(

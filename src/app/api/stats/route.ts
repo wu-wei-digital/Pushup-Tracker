@@ -63,7 +63,7 @@ export async function GET() {
 
         // Calculate streak
         const entryDates = yearEntries.map((e) => e.createdAt);
-        const { current: currentStreak, longest: longestStreak } = calculateStreak(entryDates);
+        const { current: currentStreak, longest: longestStreak } = calculateStreak(entryDates, userTimezone);
 
         // Calculate daily target
         const dailyTarget = calculateDailyTarget(user.yearlyGoal, yearTotal, user.timezone);

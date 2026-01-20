@@ -57,7 +57,9 @@ export default function RegisterForm() {
     setIsLoading(true);
     setErrors({});
 
-    const result = await register(username, email, password);
+    // Auto-detect browser timezone
+    const detectedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const result = await register(username, email, password, detectedTimezone);
 
     if (result.success) {
       router.push("/dashboard");

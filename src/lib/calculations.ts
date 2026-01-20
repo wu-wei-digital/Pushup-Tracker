@@ -1,4 +1,4 @@
-import { startOfYear, endOfYear, differenceInDays, startOfDay } from "date-fns";
+import { startOfYear, endOfYear, differenceInDays } from "date-fns";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function calculateDailyTarget(yearlyGoal: number, totalDone: number, timezone: string = "UTC"): number {
@@ -23,38 +23,65 @@ export function getDaysElapsedInYear(): number {
     return differenceInDays(now, yearStart) + 1;
 }
 
-export function calculateStreak(entryDates: Date[]): { current: number; longest: number } {
+export function calculateStreak(entryDates: Date[], timezone?: string): { current: number; longest: number } {
     if (entryDates.length === 0) return { current: 0, longest: 0 };
 
-    // Sort dates in descending order (most recent first)
-    const sortedDates = [...entryDates]
-        .map(d => startOfDay(new Date(d)))
-        .sort((a, b) => b.getTime() - a.getTime());
+    // Helper function to get the date string in the given timezone
+    const getDateStringInTimezone = (date: Date): string => {
+        if (timezone) {
+            try {
+                return new Intl.DateTimeFormat("en-CA", {
+                    timeZone: timezone,
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                }).format(date);
+            } catch {
+                // Fallback to UTC if timezone is invalid
+            }
+        }
+        return date.toISOString().split("T")[0];
+    };
+
+    // Convert entry dates to date strings in the user's timezone
+    const sortedDateStrings = [...entryDates]
+        .map(d => getDateStringInTimezone(new Date(d)))
+        .sort((a, b) => b.localeCompare(a)); // Sort descending
 
     // Remove duplicates (same day)
-    const uniqueDates: Date[] = [];
-    for (const date of sortedDates) {
-        if (uniqueDates.length === 0 || uniqueDates[uniqueDates.length - 1].getTime() !== date.getTime()) {
-            uniqueDates.push(date);
+    const uniqueDateStrings: string[] = [];
+    for (const dateStr of sortedDateStrings) {
+        if (uniqueDateStrings.length === 0 || uniqueDateStrings[uniqueDateStrings.length - 1] !== dateStr) {
+            uniqueDateStrings.push(dateStr);
         }
     }
 
-    const today = startOfDay(new Date());
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
+    // Get today and yesterday in the user's timezone
+    const now = new Date();
+    const todayStr = getDateStringInTimezone(now);
+    const yesterdayDate = new Date(now);
+    yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+    const yesterdayStr = getDateStringInTimezone(yesterdayDate);
+
+    // Helper function to get the previous day's date string
+    const getPreviousDay = (dateStr: string): string => {
+        const [year, month, day] = dateStr.split("-").map(Number);
+        const date = new Date(year, month - 1, day);
+        date.setDate(date.getDate() - 1);
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    };
 
     // Calculate current streak
     let currentStreak = 0;
-    const firstDate = uniqueDates[0];
+    const firstDateStr = uniqueDateStrings[0];
 
     // Check if the most recent entry is today or yesterday
-    if (firstDate.getTime() === today.getTime() || firstDate.getTime() === yesterday.getTime()) {
+    if (firstDateStr === todayStr || firstDateStr === yesterdayStr) {
         currentStreak = 1;
-        for (let i = 1; i < uniqueDates.length; i++) {
-            const expectedDate = new Date(uniqueDates[i - 1]);
-            expectedDate.setDate(expectedDate.getDate() - 1);
+        for (let i = 1; i < uniqueDateStrings.length; i++) {
+            const expectedDateStr = getPreviousDay(uniqueDateStrings[i - 1]);
 
-            if (uniqueDates[i].getTime() === expectedDate.getTime()) {
+            if (uniqueDateStrings[i] === expectedDateStr) {
                 currentStreak++;
             } else {
                 break;
@@ -66,11 +93,10 @@ export function calculateStreak(entryDates: Date[]): { current: number; longest:
     let longestStreak = 1;
     let tempStreak = 1;
 
-    for (let i = 1; i < uniqueDates.length; i++) {
-        const expectedDate = new Date(uniqueDates[i - 1]);
-        expectedDate.setDate(expectedDate.getDate() - 1);
+    for (let i = 1; i < uniqueDateStrings.length; i++) {
+        const expectedDateStr = getPreviousDay(uniqueDateStrings[i - 1]);
 
-        if (uniqueDates[i].getTime() === expectedDate.getTime()) {
+        if (uniqueDateStrings[i] === expectedDateStr) {
             tempStreak++;
             longestStreak = Math.max(longestStreak, tempStreak);
         } else {

@@ -5,6 +5,26 @@ import { Card, Button, Input, Badge } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 
+const COMMON_TIMEZONES = [
+  { value: "Australia/Brisbane", label: "Australia/Brisbane (AEST)" },
+  { value: "Australia/Sydney", label: "Australia/Sydney (AEST/AEDT)" },
+  { value: "Australia/Melbourne", label: "Australia/Melbourne (AEST/AEDT)" },
+  { value: "Australia/Perth", label: "Australia/Perth (AWST)" },
+  { value: "Australia/Adelaide", label: "Australia/Adelaide (ACST/ACDT)" },
+  { value: "Australia/Darwin", label: "Australia/Darwin (ACST)" },
+  { value: "Pacific/Auckland", label: "New Zealand (NZST/NZDT)" },
+  { value: "Asia/Tokyo", label: "Japan (JST)" },
+  { value: "Asia/Singapore", label: "Singapore (SGT)" },
+  { value: "Asia/Hong_Kong", label: "Hong Kong (HKT)" },
+  { value: "Europe/London", label: "London (GMT/BST)" },
+  { value: "Europe/Paris", label: "Paris (CET/CEST)" },
+  { value: "America/New_York", label: "New York (EST/EDT)" },
+  { value: "America/Chicago", label: "Chicago (CST/CDT)" },
+  { value: "America/Denver", label: "Denver (MST/MDT)" },
+  { value: "America/Los_Angeles", label: "Los Angeles (PST/PDT)" },
+  { value: "UTC", label: "UTC" },
+];
+
 export default function ProfilePage() {
   const { user, refreshUser } = useAuth();
   const { showToast } = useToast();
@@ -12,6 +32,7 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [yearlyGoal, setYearlyGoal] = useState("");
+  const [timezone, setTimezone] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [stats, setStats] = useState<{
     totalPushups: number;
@@ -26,6 +47,7 @@ export default function ProfilePage() {
       setDisplayName(user.displayName || "");
       setBio(user.bio || "");
       setYearlyGoal(user.yearlyGoal.toString());
+      setTimezone(user.timezone || "Australia/Brisbane");
       fetchProfile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,6 +78,7 @@ export default function ProfilePage() {
           displayName: displayName || null,
           bio: bio || null,
           yearlyGoal: parseInt(yearlyGoal) || 10000,
+          timezone: timezone || "Australia/Brisbane",
         }),
       });
 
@@ -128,6 +151,25 @@ export default function ProfilePage() {
                 min="100"
                 max="1000000"
               />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Timezone
+                </label>
+                <select
+                  value={timezone}
+                  onChange={(e) => setTimezone(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  {COMMON_TIMEZONES.map((tz) => (
+                    <option key={tz.value} value={tz.value}>
+                      {tz.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-xs text-gray-500">
+                  This determines when your daily stats reset
+                </p>
+              </div>
               <div className="flex gap-2 justify-end">
                 <Button variant="ghost" onClick={() => setIsEditing(false)}>
                   Cancel

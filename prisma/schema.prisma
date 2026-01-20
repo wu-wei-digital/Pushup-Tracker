@@ -16,7 +16,7 @@ model User {
   displayName  String?   @map("display_name")
   bio          String?
   yearlyGoal   Int       @default(10000) @map("yearly_goal")
-  timezone     String    @default("UTC")
+  timezone     String    @default("Australia/Brisbane")
   points       Int       @default(0)
   level        Int       @default(1)
   currentTitle String?   @map("current_title")

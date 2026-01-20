@@ -7,14 +7,19 @@ import { CardSkeleton } from "@/components/ui/Skeleton";
 import { ProgressCard, DailyTargetCard, StatsGrid, StreakCard } from "@/components/dashboard";
 import { useStats } from "@/hooks/useStats";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDayChange } from "@/hooks/useDayChange";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { stats, isLoading, fetchStats } = useStats();
 
+  // Refresh stats when page loads
   useEffect(() => {
     fetchStats();
   }, [fetchStats]);
+
+  // Refresh stats when the day changes (midnight in user's timezone)
+  useDayChange(fetchStats, user?.timezone);
 
   if (isLoading || !stats) {
     return (

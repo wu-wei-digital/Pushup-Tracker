@@ -5,8 +5,11 @@ import { Card } from "@/components/ui";
 import QuickAddButtons from "@/components/log/QuickAddButtons";
 import TodayEntries from "@/components/log/TodayEntries";
 import { useEntries } from "@/hooks/useEntries";
+import { useAuth } from "@/contexts/AuthContext";
+import { useDayChange } from "@/hooks/useDayChange";
 
 export default function LogPage() {
+  const { user } = useAuth();
   const {
     entries,
     todayTotal,
@@ -17,9 +20,13 @@ export default function LogPage() {
     deleteEntry,
   } = useEntries();
 
+  // Fetch entries on page load
   useEffect(() => {
     fetchTodayEntries();
   }, [fetchTodayEntries]);
+
+  // Refresh entries when the day changes (midnight in user's timezone)
+  useDayChange(fetchTodayEntries, user?.timezone);
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
