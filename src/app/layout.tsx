@@ -15,6 +15,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pushups.wuwei.digital"),
   title: "Pushup Tracker | Wu Wei Digital",
   description: "Social, gamified pushup tracking app with challenges, achievements, and friends",
   keywords: ["pushup", "fitness", "tracker", "workout", "exercise", "challenge", "wu wei digital"],
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Pushup Tracker",
     images: [
       {
-        url: "/Pushup%20Tracker%20OG%20image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Pushup Tracker - Track your progress, compete with friends",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Pushup Tracker | Wu Wei Digital",
     description: "Social, gamified pushup tracking app with challenges, achievements, and friends",
-    images: ["/Pushup%20Tracker%20OG%20image.png"],
+    images: ["/og-image.png"],
   },
 };
 
