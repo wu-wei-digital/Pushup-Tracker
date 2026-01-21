@@ -1,8 +1,23 @@
-// Root page - middleware handles redirect to /login or /dashboard
+"use client";
+
+import {
+    HeroSection,
+    FeaturesSection,
+    BenefitsSection,
+    PushForBetterSection,
+    CTASection,
+    LandingFooter,
+} from "@/components/landing";
+
 export default function Home() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600" />
-    </div>
-  );
+    return (
+        <main className="min-h-screen bg-background">
+            <HeroSection />
+            <FeaturesSection />
+            <BenefitsSection />
+            <PushForBetterSection />
+            <CTASection />
+            <LandingFooter />
+        </main>
+    );
 }
