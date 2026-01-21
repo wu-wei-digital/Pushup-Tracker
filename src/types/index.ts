@@ -75,11 +75,14 @@ export interface PublicUser {
 }
 
 // Entry types
+export type EntrySource = "manual" | "pomodoro";
+
 export interface PushupEntry {
   id: number;
   userId: number;
   amount: number;
   note: string | null;
+  source?: EntrySource;
   createdAt: string;
   user?: PublicUser;
   reactions?: Reaction[];

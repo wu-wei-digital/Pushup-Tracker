@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { Button, Input } from "@/components/ui";
 import { useToast } from "@/components/ui/Toast";
+import { PomodoroModal } from "@/components/pomodoro";
+import type { EntrySource } from "@/types";
 
 interface QuickAddButtonsProps {
-  onAdd: (amount: number, note?: string) => Promise<{ success: boolean; pointsEarned?: number }>;
+  onAdd: (amount: number, note?: string, source?: EntrySource) => Promise<{ success: boolean; pointsEarned?: number }>;
 }
 
 const QUICK_AMOUNTS = [1, 5, 10, 20, 50];
@@ -13,7 +15,18 @@ const QUICK_AMOUNTS = [1, 5, 10, 20, 50];
 export default function QuickAddButtons({ onAdd }: QuickAddButtonsProps) {
   const [customAmount, setCustomAmount] = useState("");
   const [isAdding, setIsAdding] = useState<number | null>(null);
+  const [showPomodoroModal, setShowPomodoroModal] = useState(false);
   const { showToast } = useToast();
+
+  const handlePomodoroComplete = async (totalPushups: number) => {
+    const result = await onAdd(totalPushups, "Pomodoro session", "pomodoro");
+    if (result.success) {
+      showToast("success", `Added ${totalPushups} pushups from Pomodoro! +${result.pointsEarned} XP`);
+    } else {
+      showToast("error", "Failed to save pomodoro pushups");
+      throw new Error("Failed to save");
+    }
+  };
 
   const handleQuickAdd = async (amount: number) => {
     setIsAdding(amount);
@@ -88,6 +101,22 @@ export default function QuickAddButtons({ onAdd }: QuickAddButtonsProps) {
           Add
         </Button>
       </form>
+
+      {/* Pomodoro Mode Button */}
+      <button
+        onClick={() => setShowPomodoroModal(true)}
+        className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+      >
+        <span>🍅</span>
+        <span>Start Pomodoro Mode</span>
+      </button>
+
+      {/* Pomodoro Modal */}
+      <PomodoroModal
+        isOpen={showPomodoroModal}
+        onClose={() => setShowPomodoroModal(false)}
+        onComplete={handlePomodoroComplete}
+      />
     </div>
   );
 }

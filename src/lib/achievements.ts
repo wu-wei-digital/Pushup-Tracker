@@ -23,6 +23,8 @@ export interface AchievementCheckStats {
   friendCount: number;
   challengesWon: number;
   challengesJoined: number;
+  pomodoroSessions: number;
+  pomodoroPushups: number;
 }
 
 export const BADGE_DEFINITIONS: BadgeDefinition[] = [
@@ -80,6 +82,13 @@ export const BADGE_DEFINITIONS: BadgeDefinition[] = [
   { type: "entries_100", name: "Logger", description: "Log 100 entries", rarity: "uncommon", icon: "list", checkCondition: (s) => s.totalEntries >= 100 },
   { type: "entries_500", name: "Dedicated Logger", description: "Log 500 entries", rarity: "rare", icon: "list", checkCondition: (s) => s.totalEntries >= 500 },
   { type: "entries_1000", name: "Master Logger", description: "Log 1,000 entries", rarity: "epic", icon: "list", checkCondition: (s) => s.totalEntries >= 1000 },
+
+  // Pomodoro badges
+  { type: "first_pomodoro", name: "Pomodoro Starter", description: "Complete your first pomodoro session", rarity: "common", icon: "timer", checkCondition: (s) => s.pomodoroSessions >= 1 },
+  { type: "pomodoro_10", name: "Focused Mind", description: "Complete 10 pomodoro sessions", rarity: "uncommon", icon: "timer", checkCondition: (s) => s.pomodoroSessions >= 10 },
+  { type: "pomodoro_50", name: "Productivity Pro", description: "Complete 50 pomodoro sessions", rarity: "rare", icon: "timer", checkCondition: (s) => s.pomodoroSessions >= 50 },
+  { type: "pomodoro_100", name: "Time Master", description: "Complete 100 pomodoro sessions", rarity: "epic", icon: "timer", checkCondition: (s) => s.pomodoroSessions >= 100 },
+  { type: "pomodoro_pushups_1000", name: "Pomodoro Warrior", description: "Log 1,000 pushups during pomodoro breaks", rarity: "rare", icon: "timer", checkCondition: (s) => s.pomodoroPushups >= 1000 },
 ];
 
 export function getUnlockedBadges(stats: AchievementCheckStats): BadgeDefinition[] {

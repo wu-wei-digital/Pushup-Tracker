@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import type { PushupEntry } from "@/types";
+import type { PushupEntry, EntrySource } from "@/types";
 
 interface TodayEntriesResponse {
   entries: PushupEntry[];
@@ -30,13 +30,13 @@ export function useEntries() {
     }
   }, []);
 
-  const addEntry = useCallback(async (amount: number, note?: string) => {
+  const addEntry = useCallback(async (amount: number, note?: string, source: EntrySource = "manual") => {
     setError(null);
     try {
       const res = await fetch("/api/entries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, note }),
+        body: JSON.stringify({ amount, note, source }),
       });
 
       if (!res.ok) {

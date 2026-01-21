@@ -40,7 +40,7 @@ export async function POST() {
 
     const entries = await prisma.pushupEntry.findMany({
       where: { userId, isDeleted: false },
-      select: { amount: true, createdAt: true },
+      select: { amount: true, createdAt: true, source: true },
     });
 
     const yearEntries = entries.filter((e) => e.createdAt >= yearStart);
@@ -52,6 +52,11 @@ export async function POST() {
     const weekTotal = weekEntries.reduce((sum, e) => sum + e.amount, 0);
     const { current: currentStreak, longest: longestStreak } = calculateStreak(entries.map((e) => e.createdAt), userTimezone);
     const singleEntryMax = Math.max(...entries.map((e) => e.amount), 0);
+
+    // Calculate pomodoro stats
+    const pomodoroEntries = entries.filter((e) => e.source === "pomodoro");
+    const pomodoroSessions = pomodoroEntries.length;
+    const pomodoroPushups = pomodoroEntries.reduce((sum, e) => sum + e.amount, 0);
 
     // Get friend count
     const friendCount = await prisma.friendship.count({
@@ -82,6 +87,8 @@ export async function POST() {
       friendCount,
       challengesWon: 0, // Would need to implement challenge winner logic
       challengesJoined,
+      pomodoroSessions,
+      pomodoroPushups,
     };
 
     // Check for new badges

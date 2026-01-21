@@ -50,6 +50,7 @@ model PushupEntry {
   userId    Int        @map("user_id")
   amount    Int
   note      String?
+  source    String     @default("manual") @db.VarChar(20)
   createdAt DateTime   @default(now()) @map("created_at")
   isDeleted Boolean    @default(false) @map("is_deleted")
 

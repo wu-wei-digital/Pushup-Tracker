@@ -21,6 +21,7 @@ interface FeedEntry {
     entryId: number;
     amount: number;
     note: string | null;
+    source?: "manual" | "pomodoro";
     reactions: Array<{
       id: number;
       userId: number;
@@ -178,9 +179,16 @@ export default function FeedPage() {
 
               {/* Content */}
               <div className="mb-4">
-                <p className="text-lg font-semibold text-foreground">
-                  Did <span className="text-sage-600">{entry.data.amount}</span> pushup{entry.data.amount !== 1 ? "s" : ""}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-lg font-semibold text-foreground">
+                    Did <span className="text-sage-600">{entry.data.amount}</span> pushup{entry.data.amount !== 1 ? "s" : ""}
+                  </p>
+                  {entry.data.source === "pomodoro" && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded-full">
+                      🍅 Pomodoro
+                    </span>
+                  )}
+                </div>
                 {entry.data.note && (
                   <p className="text-sage-600 mt-1">{entry.data.note}</p>
                 )}

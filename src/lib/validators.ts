@@ -26,6 +26,7 @@ export const loginSchema = z.object({
 export const createEntrySchema = z.object({
   amount: z.number().int().min(1, "Amount must be at least 1").max(10000, "Amount seems too high"),
   note: z.string().max(500, "Note must be at most 500 characters").optional(),
+  source: z.enum(["manual", "pomodoro"]).default("manual"),
 });
 
 export const updateEntrySchema = z.object({

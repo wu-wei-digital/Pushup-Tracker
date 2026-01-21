@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { amount, note } = validation.data;
+    const { amount, note, source } = validation.data;
 
     // Get user's timezone
     const userRecord = await prisma.user.findUnique({
@@ -116,6 +116,7 @@ export async function POST(request: NextRequest) {
           userId: payload.userId,
           amount,
           note,
+          source,
         },
       });
 
@@ -170,6 +171,7 @@ export async function POST(request: NextRequest) {
       existingAchievements,
       friendCount,
       challengeStats,
+      pomodoroStats,
     ] = await Promise.all([
       prisma.pushupEntry.aggregate({
         where: { userId: payload.userId, isDeleted: false },
@@ -227,6 +229,11 @@ export async function POST(request: NextRequest) {
         where: { userId: payload.userId },
         include: { challenge: true },
       }),
+      prisma.pushupEntry.aggregate({
+        where: { userId: payload.userId, isDeleted: false, source: "pomodoro" },
+        _sum: { amount: true },
+        _count: true,
+      }),
     ]);
 
     // Calculate streak for achievements
@@ -263,6 +270,8 @@ export async function POST(request: NextRequest) {
       friendCount,
       challengesWon,
       challengesJoined: challengeStats.length,
+      pomodoroSessions: pomodoroStats._count || 0,
+      pomodoroPushups: pomodoroStats._sum?.amount || 0,
     };
 
     const existingBadgeTypes = existingAchievements.map(a => a.badgeType);

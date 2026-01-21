@@ -72,6 +72,7 @@ export async function GET(request: NextRequest) {
         entryId: entry.id,
         amount: entry.amount,
         note: entry.note,
+        source: entry.source,
         reactions: entry.reactions,
         reactionCount: entry._count.reactions,
         commentCount: entry._count.comments,
