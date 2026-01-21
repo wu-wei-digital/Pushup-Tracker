@@ -12,17 +12,30 @@ export default function PushForBetterSection() {
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
-          Community Initiative
+                    Our Inspiration
                 </div>
 
                 <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-6">
-          Inspired by Push for Better
+                    Inspired by The Push Up Challenge
                 </h2>
 
-                <p className="text-xl text-white/90 max-w-2xl mx-auto mb-8 leading-relaxed">
-          Every year, the <span className="font-semibold">Push for Better</span> challenge brings people together
-          for a mid-year fitness initiative that combines personal growth with charitable giving.
-          This app was built to help participants track their progress and stay motivated.
+                <p className="text-xl text-white/90 max-w-2xl mx-auto mb-6 leading-relaxed">
+                    <a
+                        href="https://www.thepushupchallenge.com.au/about-us/push-for-better-foundation"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold underline underline-offset-2 hover:text-white transition-colors"
+                    >
+                        The Push Up Challenge
+                    </a>{" "}
+                    is an annual month-long event run by the Push for Better Foundation in Australia,
+                    bringing communities together through fitness while raising awareness and funds for mental health.
+                </p>
+
+                <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    While this app is not affiliated with their challenge, it was inspired by their mission.
+                    We&apos;ve built a year-round platform for anyone looking to build a consistent pushup habit
+                    and track their progress over time.
                 </p>
 
                 <div className="flex flex-wrap justify-center gap-6 text-white/80">
@@ -40,9 +53,9 @@ export default function PushForBetterSection() {
                     </div>
                     <div className="flex items-center gap-2">
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        <span>Support charity</span>
+                        <span>Year-round challenges</span>
                     </div>
                 </div>
             </div>
