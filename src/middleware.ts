@@ -14,6 +14,7 @@ const protectedRoutes = [
   "/teams",
   "/notifications",
   "/settings",
+  "/admin",
 ];
 
 // Routes that should redirect to dashboard if already authenticated

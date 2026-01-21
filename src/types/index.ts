@@ -11,8 +11,57 @@ export interface User {
   level: number;
   currentTitle: string | null;
   theme: string;
+  isAdmin: boolean;
+  isDisabled: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+// Admin types
+export interface AdminUser {
+  id: number;
+  username: string;
+  email: string;
+  displayName: string | null;
+  isAdmin: boolean;
+  isDisabled: boolean;
+  disabledAt: string | null;
+  points: number;
+  level: number;
+  createdAt: string;
+  updatedAt: string;
+  _count: {
+    entries: number;
+  };
+}
+
+export interface AdminUserDetail extends AdminUser {
+  bio: string | null;
+  yearlyGoal: number;
+  timezone: string;
+  currentTitle: string | null;
+  disabledBy: number | null;
+  _count: {
+    entries: number;
+    achievements: number;
+    friendships: number;
+    teamMemberships: number;
+  };
+}
+
+export interface AdminStats {
+  users: {
+    total: number;
+    active: number;
+    disabled: number;
+    admins: number;
+    newLast7Days: number;
+    newLast30Days: number;
+  };
+  pushups: {
+    total: number;
+    last7Days: number;
+  };
 }
 
 export interface PublicUser {

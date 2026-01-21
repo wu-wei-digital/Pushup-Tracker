@@ -32,6 +32,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if user is disabled
+    if (user.isDisabled) {
+      return NextResponse.json(
+        { error: "Account is disabled. Contact support." },
+        { status: 403 }
+      );
+    }
+
     // Verify password
     const isValidPassword = await verifyPassword(password, user.passwordHash);
 
@@ -47,6 +55,7 @@ export async function POST(request: NextRequest) {
       userId: user.id,
       email: user.email,
       username: user.username,
+      isAdmin: user.isAdmin,
     });
 
     // Set cookie

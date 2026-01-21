@@ -63,6 +63,8 @@ export async function POST(request: NextRequest) {
         level: true,
         currentTitle: true,
         theme: true,
+        isAdmin: true,
+        isDisabled: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -73,6 +75,7 @@ export async function POST(request: NextRequest) {
       userId: user.id,
       email: user.email,
       username: user.username,
+      isAdmin: user.isAdmin,
     });
 
     // Set cookie

@@ -27,6 +27,8 @@ export async function GET() {
         level: true,
         currentTitle: true,
         theme: true,
+        isAdmin: true,
+        isDisabled: true,
         createdAt: true,
         updatedAt: true,
       },
