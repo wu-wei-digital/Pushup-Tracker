@@ -51,81 +51,162 @@ function saveSession(session: PomodoroSessionState | null): void {
 export function usePomodoroTimer() {
   const [session, setSession] = useState<PomodoroSessionState | null>(null);
   const [hasExistingSession, setHasExistingSession] = useState(false);
+  const [displayTime, setDisplayTime] = useState("00:00");
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastTickRef = useRef<number>(Date.now());
+
+  const formatTime = useCallback((seconds: number): string => {
+    const mins = Math.floor(Math.max(0, seconds) / 60);
+    const secs = Math.max(0, seconds) % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  }, []);
+
+  // Calculate actual time remaining based on phaseStartedAt timestamp
+  const calculateTimeRemaining = useCallback((sess: PomodoroSessionState): number => {
+    if (!sess.phaseStartedAt || sess.phase === "paused" || sess.phase === "idle" || sess.phase === "completed") {
+      return sess.timeRemaining;
+    }
+
+    const phaseStarted = new Date(sess.phaseStartedAt).getTime();
+    const elapsed = Math.floor((Date.now() - phaseStarted) / 1000);
+    const phaseDuration = sess.phase === "work"
+      ? sess.settings.workDuration * 60
+      : sess.settings.breakDuration * 60;
+
+    return Math.max(0, phaseDuration - elapsed);
+  }, []);
 
   // Check for existing session on mount
   useEffect(() => {
     const stored = getStoredSession();
     if (stored && stored.phase !== "completed" && stored.phase !== "idle") {
       setHasExistingSession(true);
-      // Auto-resume if was in work or break phase (not paused)
-      if (stored.phase === "work" || stored.phase === "break") {
-        // Calculate time elapsed while away
-        const pausedAt = stored.pausedAt ? new Date(stored.pausedAt).getTime() : Date.now();
-        const now = Date.now();
-        const elapsedSeconds = Math.floor((now - pausedAt) / 1000);
-        const adjustedTime = Math.max(0, stored.timeRemaining - elapsedSeconds);
 
-        setSession({
-          ...stored,
-          timeRemaining: adjustedTime,
-          phase: "paused", // Set to paused so user can resume
-          previousPhase: stored.phase,
-          pausedAt: new Date().toISOString(),
-        });
+      if (stored.phase === "work" || stored.phase === "break") {
+        // Session was running - calculate how much time has passed
+        const remaining = calculateTimeRemaining(stored);
+
+        // If time ran out while away, pause and let user decide
+        if (remaining <= 0) {
+          setSession({
+            ...stored,
+            timeRemaining: 0,
+            phase: "paused",
+            previousPhase: stored.phase,
+            pausedAt: new Date().toISOString(),
+            phaseStartedAt: undefined,
+          });
+        } else {
+          // Pause and show remaining time - user can resume
+          setSession({
+            ...stored,
+            timeRemaining: remaining,
+            phase: "paused",
+            previousPhase: stored.phase,
+            pausedAt: new Date().toISOString(),
+            phaseStartedAt: undefined,
+          });
+        }
       } else {
         setSession(stored);
       }
     }
-  }, []);
+  }, [calculateTimeRemaining]);
 
-  // Timer tick effect
+  // Handle visibility change (tab hidden/visible, device sleep/wake)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab became hidden - the timer will naturally pause due to browser throttling
+        // We don't need to do anything special, the timestamp-based calculation handles it
+        lastTickRef.current = Date.now();
+      } else {
+        // Tab became visible - recalculate time
+        if (session && (session.phase === "work" || session.phase === "break") && session.phaseStartedAt) {
+          const remaining = calculateTimeRemaining(session);
+
+          if (remaining <= 0) {
+            // Phase ended while away - trigger transition
+            handlePhaseTransition(session);
+          } else {
+            setDisplayTime(formatTime(remaining));
+          }
+        }
+        lastTickRef.current = Date.now();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, calculateTimeRemaining, formatTime]);
+
+  // Handle phase transition when timer reaches 0
+  const handlePhaseTransition = useCallback((currentSession: PomodoroSessionState) => {
+    if (currentSession.phase === "work") {
+      // Work -> Break
+      const newSession: PomodoroSessionState = {
+        ...currentSession,
+        phase: "break",
+        timeRemaining: currentSession.settings.breakDuration * 60,
+        phaseStartedAt: new Date().toISOString(),
+      };
+      setSession(newSession);
+      saveSession(newSession);
+      setDisplayTime(formatTime(currentSession.settings.breakDuration * 60));
+    } else if (currentSession.phase === "break") {
+      // Break -> Work (new cycle)
+      const newSession: PomodoroSessionState = {
+        ...currentSession,
+        phase: "work",
+        timeRemaining: currentSession.settings.workDuration * 60,
+        currentCycle: currentSession.currentCycle + 1,
+        phaseStartedAt: new Date().toISOString(),
+      };
+      setSession(newSession);
+      saveSession(newSession);
+      setDisplayTime(formatTime(currentSession.settings.workDuration * 60));
+    }
+  }, [formatTime]);
+
+  // Timer tick effect - uses timestamps for accurate background timing
   useEffect(() => {
     if (!session || session.phase === "idle" || session.phase === "paused" || session.phase === "completed") {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
+      if (session) {
+        setDisplayTime(formatTime(session.timeRemaining));
+      }
       return;
     }
 
+    // Update display immediately
+    const remaining = calculateTimeRemaining(session);
+    setDisplayTime(formatTime(remaining));
+
     intervalRef.current = setInterval(() => {
-      setSession((prev) => {
-        if (!prev) return null;
+      const now = Date.now();
+      const timeSinceLastTick = now - lastTickRef.current;
+      lastTickRef.current = now;
 
-        if (prev.timeRemaining <= 1) {
-          // Time's up - transition phases
-          if (prev.phase === "work") {
-            // Work -> Break
-            const newSession: PomodoroSessionState = {
-              ...prev,
-              phase: "break",
-              timeRemaining: prev.settings.breakDuration * 60,
-            };
-            saveSession(newSession);
-            return newSession;
-          } else if (prev.phase === "break") {
-            // Break -> Work (new cycle)
-            const newSession: PomodoroSessionState = {
-              ...prev,
-              phase: "work",
-              timeRemaining: prev.settings.workDuration * 60,
-              currentCycle: prev.currentCycle + 1,
-            };
-            saveSession(newSession);
-            return newSession;
-          }
+      // If more than 2 seconds since last tick, browser was throttled (background tab)
+      // Recalculate from timestamp
+      const currentRemaining = calculateTimeRemaining(session);
+
+      if (currentRemaining <= 0) {
+        // Time's up - transition phases
+        handlePhaseTransition(session);
+      } else {
+        setDisplayTime(formatTime(currentRemaining));
+
+        // Save periodically (every 10 seconds) to persist state
+        if (timeSinceLastTick < 2000 && currentRemaining % 10 === 0) {
+          const updatedSession = { ...session, timeRemaining: currentRemaining };
+          saveSession(updatedSession);
         }
-
-        // Normal tick
-        const newSession: PomodoroSessionState = {
-          ...prev,
-          timeRemaining: prev.timeRemaining - 1,
-        };
-        saveSession(newSession);
-        return newSession;
-      });
+      }
     }, 1000);
 
     return () => {
@@ -134,7 +215,8 @@ export function usePomodoroTimer() {
         intervalRef.current = null;
       }
     };
-  }, [session?.phase]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.phase, session?.phaseStartedAt, calculateTimeRemaining, formatTime, handlePhaseTransition]);
 
   const startSession = useCallback((settings: PomodoroSettings = DEFAULT_POMODORO_SETTINGS) => {
     const newSession: PomodoroSessionState = {
@@ -146,10 +228,12 @@ export function usePomodoroTimer() {
       totalPushups: 0,
       pushupLog: [],
       startedAt: new Date().toISOString(),
+      phaseStartedAt: new Date().toISOString(),
     };
     setSession(newSession);
     setHasExistingSession(false);
     saveSession(newSession);
+    lastTickRef.current = Date.now();
   }, []);
 
   const resumeSession = useCallback(() => {
@@ -160,24 +244,30 @@ export function usePomodoroTimer() {
       phase: session.previousPhase,
       previousPhase: undefined,
       pausedAt: undefined,
+      phaseStartedAt: new Date().toISOString(),
+      // timeRemaining stays the same - phaseStartedAt is set fresh
     };
     setSession(resumedSession);
     setHasExistingSession(false);
     saveSession(resumedSession);
+    lastTickRef.current = Date.now();
   }, [session]);
 
   const pauseSession = useCallback(() => {
     if (!session || session.phase === "idle" || session.phase === "paused" || session.phase === "completed") return;
 
+    const remaining = calculateTimeRemaining(session);
     const pausedSession: PomodoroSessionState = {
       ...session,
       previousPhase: session.phase,
       phase: "paused",
       pausedAt: new Date().toISOString(),
+      phaseStartedAt: undefined,
+      timeRemaining: remaining,
     };
     setSession(pausedSession);
     saveSession(pausedSession);
-  }, [session]);
+  }, [session, calculateTimeRemaining]);
 
   const stopSession = useCallback((): PomodoroSummary | null => {
     if (!session) return null;
@@ -199,12 +289,10 @@ export function usePomodoroTimer() {
       pushupLog: session.pushupLog,
     };
 
-    const completedSession: PomodoroSessionState = {
-      ...session,
-      phase: "completed",
-    };
-    setSession(completedSession);
-    saveSession(null); // Clear from storage
+    // Clear the session completely
+    setSession(null);
+    setHasExistingSession(false);
+    saveSession(null);
 
     return summary;
   }, [session]);
@@ -227,21 +315,13 @@ export function usePomodoroTimer() {
     saveSession(null);
   }, []);
 
-  const formatTime = useCallback((seconds: number): string => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  }, []);
-
-  const formattedTime = session ? formatTime(session.timeRemaining) : "00:00";
-
   const isActive = session !== null && session.phase !== "idle" && session.phase !== "completed";
 
   return {
     session,
     isActive,
     hasExistingSession,
-    formattedTime,
+    formattedTime: displayTime,
     startSession,
     resumeSession,
     pauseSession,

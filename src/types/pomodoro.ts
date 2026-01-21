@@ -17,6 +17,7 @@ export interface PomodoroSessionState {
   pushupLog: number[]; // pushups added per break
   startedAt: string; // ISO timestamp
   pausedAt?: string; // ISO timestamp when paused
+  phaseStartedAt?: string; // ISO timestamp when current phase started (for background timing)
 }
 
 export interface PomodoroSummary {

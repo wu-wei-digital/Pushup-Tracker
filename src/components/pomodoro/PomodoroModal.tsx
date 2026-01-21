@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui";
 import { usePomodoroTimer } from "@/hooks/usePomodoroTimer";
 import type { PomodoroSettings, PomodoroSummary as PomodoroSummaryType } from "@/types/pomodoro";
@@ -33,25 +33,40 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
   const [view, setView] = useState<ViewState>("settings");
   const [summary, setSummary] = useState<PomodoroSummaryType | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const hasInitialized = useRef(false);
 
-  // Handle view changes based on session state
+  // Initialize view based on session state (only on mount or when modal opens)
   useEffect(() => {
+    if (!isOpen) {
+      hasInitialized.current = false;
+      return;
+    }
+
+    // Don't reinitialize if we're showing summary
+    if (summary) {
+      setView("summary");
+      return;
+    }
+
     if (hasExistingSession && session && session.phase === "paused") {
       setView("resume-prompt");
+      hasInitialized.current = true;
     } else if (isActive && session) {
       setView("timer");
-    } else if (summary) {
-      setView("summary");
-    }
-  }, [hasExistingSession, isActive, session, summary]);
-
-  // Reset view when modal opens
-  useEffect(() => {
-    if (isOpen && !isActive && !hasExistingSession) {
+      hasInitialized.current = true;
+    } else if (!hasInitialized.current) {
+      // Only reset to settings if we haven't initialized yet
       setView("settings");
-      setSummary(null);
+      hasInitialized.current = true;
     }
-  }, [isOpen, isActive, hasExistingSession]);
+  }, [isOpen, hasExistingSession, isActive, session, summary]);
+
+  // When session becomes active, switch to timer view
+  useEffect(() => {
+    if (isActive && session && view !== "timer") {
+      setView("timer");
+    }
+  }, [isActive, session, view]);
 
   const handleStart = (settings: PomodoroSettings) => {
     startSession(settings);
@@ -65,6 +80,7 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
 
   const handleStartNew = () => {
     discardSession();
+    setSummary(null);
     setView("settings");
   };
 
@@ -83,7 +99,7 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
     try {
       await onComplete(summary.totalPushups);
       setSummary(null);
-      discardSession();
+      hasInitialized.current = false;
       onClose();
     } finally {
       setIsSubmitting(false);
@@ -93,6 +109,7 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
   const handleDiscard = () => {
     setSummary(null);
     discardSession();
+    hasInitialized.current = false;
     onClose();
   };
 
@@ -102,8 +119,13 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
       onClose();
       return;
     }
+    // If showing summary, keep it (user clicked backdrop)
+    if (summary) {
+      return;
+    }
     // Otherwise, full close
     discardSession();
+    hasInitialized.current = false;
     onClose();
   };
 
@@ -114,7 +136,7 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
-        onClick={isActive ? onClose : handleClose}
+        onClick={handleClose}
       />
 
       {/* Modal */}
@@ -122,27 +144,29 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
         {/* Coral accent bar at top */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-coral-400 via-coral-500 to-coral-600 rounded-t-2xl" />
 
-        {/* Close button */}
-        <button
-          onClick={isActive ? onClose : handleClose}
-          className="absolute top-4 right-4 text-sage-400 hover:text-sage-600 transition-colors"
-          aria-label="Close"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {/* Close button - only show if not in summary view */}
+        {view !== "summary" && (
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 text-sage-400 hover:text-sage-600 transition-colors"
+            aria-label="Close"
           >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        )}
 
         {/* Pomodoro icon */}
         <div className="text-center mb-4 mt-2">
@@ -166,6 +190,9 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
               <div className="bg-coral-50 rounded-xl p-4 text-sm text-coral-700 border border-coral-100">
                 <div className="font-medium">Cycle {session.currentCycle}</div>
                 <div>{session.totalPushups} pushups logged</div>
+                <div className="text-coral-600 mt-1">
+                  {Math.floor(session.timeRemaining / 60)}:{(session.timeRemaining % 60).toString().padStart(2, "0")} remaining
+                </div>
               </div>
             )}
             <div className="flex gap-3">
