@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import type {
-  PomodoroPhase,
   PomodoroSettings,
   PomodoroSessionState,
   PomodoroSummary,
@@ -81,6 +80,7 @@ export function usePomodoroTimer() {
   }, []);
 
   // Timer tick effect
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!session || session.phase === "idle" || session.phase === "paused" || session.phase === "completed") {
       if (intervalRef.current) {
