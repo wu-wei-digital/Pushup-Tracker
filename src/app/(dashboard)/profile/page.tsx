@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Card, Button, Input, Badge } from "@/components/ui";
+import { ProfilePictureUpload } from "@/components/profile";
+import { Avatar } from "@/components/ui/Avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 
@@ -97,6 +99,11 @@ export default function ProfilePage() {
         }
     };
 
+    const handleProfilePictureUpdate = (url: string | null) => {
+        refreshUser();
+        showToast("success", url ? "Profile picture updated" : "Profile picture removed");
+    };
+
     if (!user) return null;
 
     return (
@@ -116,15 +123,26 @@ export default function ProfilePage() {
             {/* Profile Card */}
             <Card>
                 <div className="flex flex-col items-center text-center">
-                    {/* Avatar */}
-                    <div className="w-24 h-24 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                        <span className="text-primary-600 font-bold text-4xl">
-                            {(user.displayName || user.username).charAt(0).toUpperCase()}
-                        </span>
-                    </div>
+                    {/* Profile Picture */}
+                    {isEditing ? (
+                        <ProfilePictureUpload
+                            currentPicture={user.profilePicture}
+                            name={user.displayName || user.username}
+                            userId={user.id}
+                            onUpdate={handleProfilePictureUpdate}
+                        />
+                    ) : (
+                        <div className="mb-4">
+                            <Avatar
+                                src={user.profilePicture}
+                                name={user.displayName || user.username}
+                                size="xl"
+                            />
+                        </div>
+                    )}
 
                     {isEditing ? (
-                        <div className="w-full space-y-4">
+                        <div className="w-full space-y-4 mt-4">
                             <Input
                                 label="Display Name"
                                 value={displayName}

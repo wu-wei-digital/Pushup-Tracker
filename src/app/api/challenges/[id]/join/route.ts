@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { checkAndAwardAchievements } from "@/lib/checkAchievements";
 
 export async function POST(
     request: NextRequest,
@@ -48,6 +49,9 @@ export async function POST(
                 userId: payload.userId,
             },
         });
+
+        // Check achievements for challenge-related badges
+        await checkAndAwardAchievements(payload.userId);
 
         return NextResponse.json({ participant }, { status: 201 });
     } catch (error) {

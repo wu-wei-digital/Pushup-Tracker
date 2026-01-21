@@ -4,8 +4,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { createEntrySchema } from "@/lib/validators";
 import { calculatePushupPoints, calculateLevel, getTitle } from "@/lib/points";
 import { getTodayBounds, calculateStreak } from "@/lib/calculations";
-import { getNewlyUnlockedBadges, AchievementCheckStats } from "@/lib/achievements";
-import { startOfYear, startOfWeek, startOfMonth } from "date-fns";
+import { checkAndAwardAchievements } from "@/lib/checkAchievements";
+import { startOfYear } from "date-fns";
 
 export async function GET(request: NextRequest) {
     try {
@@ -155,160 +155,17 @@ export async function POST(request: NextRequest) {
             return [newEntry, updatedUser];
         });
 
-        // Check for achievements
-        const { start: todayStartAch, end: todayEndAch } = getTodayBounds(userTimezone);
-        const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-        const monthStart = startOfMonth(new Date());
-
-        const [
-            totalStats,
-            todayStats,
-            weekStats,
-            monthStats,
-            maxEntry,
-            entryCount,
-            userInfo,
-            existingAchievements,
-            friendCount,
-            challengeStats,
-            pomodoroStats,
-        ] = await Promise.all([
-            prisma.pushupEntry.aggregate({
-                where: { userId: payload.userId, isDeleted: false },
-                _sum: { amount: true },
-            }),
-            prisma.pushupEntry.aggregate({
-                where: {
-                    userId: payload.userId,
-                    isDeleted: false,
-                    createdAt: { gte: todayStartAch, lte: todayEndAch },
-                },
-                _sum: { amount: true },
-            }),
-            prisma.pushupEntry.aggregate({
-                where: {
-                    userId: payload.userId,
-                    isDeleted: false,
-                    createdAt: { gte: weekStart },
-                },
-                _sum: { amount: true },
-            }),
-            prisma.pushupEntry.aggregate({
-                where: {
-                    userId: payload.userId,
-                    isDeleted: false,
-                    createdAt: { gte: monthStart },
-                },
-                _sum: { amount: true },
-            }),
-            prisma.pushupEntry.findFirst({
-                where: { userId: payload.userId, isDeleted: false },
-                orderBy: { amount: "desc" },
-                select: { amount: true },
-            }),
-            prisma.pushupEntry.count({
-                where: { userId: payload.userId, isDeleted: false },
-            }),
-            prisma.user.findUnique({
-                where: { id: payload.userId },
-                select: { level: true },
-            }),
-            prisma.achievement.findMany({
-                where: { userId: payload.userId },
-                select: { badgeType: true },
-            }),
-            prisma.friendship.count({
-                where: {
-                    OR: [
-                        { userId: payload.userId, status: "accepted" },
-                        { friendId: payload.userId, status: "accepted" },
-                    ],
-                },
-            }),
-            prisma.challengeParticipant.findMany({
-                where: { userId: payload.userId },
-                include: { challenge: true },
-            }),
-            prisma.pushupEntry.aggregate({
-                where: { userId: payload.userId, isDeleted: false, source: "pomodoro" },
-                _sum: { amount: true },
-                _count: true,
-            }),
-        ]);
-
-        // Calculate streak for achievements
-        const allDatesForStreak = await prisma.pushupEntry.findMany({
-            where: {
-                userId: payload.userId,
-                isDeleted: false,
-                createdAt: { gte: startOfYear(new Date()) },
-            },
-            select: { createdAt: true },
-            orderBy: { createdAt: "asc" },
-        });
-        const streakInfo = calculateStreak(allDatesForStreak.map(e => e.createdAt), userTimezone);
-
-        // Count unique days with entries
-        const uniqueDays = new Set(
-            allDatesForStreak.map(e => e.createdAt.toISOString().split("T")[0])
-        ).size;
-
-        // Count challenges won (simplified - would need more complex logic to determine wins)
-        const challengesWon = 0;
-
-        const stats: AchievementCheckStats = {
-            totalPushups: totalStats._sum.amount || 0,
-            currentStreak: streakInfo.current,
-            longestStreak: streakInfo.longest,
-            totalDays: uniqueDays,
-            todayTotal: todayStats._sum.amount || 0,
-            weekTotal: weekStats._sum.amount || 0,
-            monthTotal: monthStats._sum.amount || 0,
-            singleEntryMax: maxEntry?.amount || 0,
-            totalEntries: entryCount,
-            level: userInfo?.level || 1,
-            friendCount,
-            challengesWon,
-            challengesJoined: challengeStats.length,
-            pomodoroSessions: pomodoroStats._count || 0,
-            pomodoroPushups: pomodoroStats._sum?.amount || 0,
-        };
-
-        const existingBadgeTypes = existingAchievements.map(a => a.badgeType);
-        const newBadges = getNewlyUnlockedBadges(stats, existingBadgeTypes);
-
-        // Create new achievements
-        if (newBadges.length > 0) {
-            await prisma.$transaction(async (tx) => {
-                for (const badge of newBadges) {
-                    await tx.achievement.create({
-                        data: {
-                            userId: payload.userId,
-                            badgeType: badge.type,
-                            badgeName: badge.name,
-                            badgeDesc: badge.description,
-                            badgeRarity: badge.rarity,
-                        },
-                    });
-
-                    // Create notification for new achievement
-                    await tx.notification.create({
-                        data: {
-                            userId: payload.userId,
-                            type: "achievement",
-                            title: "New Achievement Unlocked!",
-                            content: `You earned the "${badge.name}" badge: ${badge.description}`,
-                            link: "/achievements",
-                        },
-                    });
-                }
-            });
-        }
+        // Check for achievements using shared utility
+        const achievementResult = await checkAndAwardAchievements(payload.userId);
 
         return NextResponse.json({
             entry,
             pointsEarned,
-            newAchievements: newBadges.map(b => ({ name: b.name, description: b.description, rarity: b.rarity })),
+            newAchievements: achievementResult.newBadges.map(b => ({
+                name: b.name,
+                description: b.description,
+                rarity: b.rarity,
+            })),
         }, { status: 201 });
     } catch (error) {
         console.error("Create entry error:", error);

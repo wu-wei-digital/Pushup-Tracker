@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card, Button, Badge, Modal, Input, ProgressBar } from "@/components/ui";
+import { TeamInvitationCard } from "@/components/teams";
 import { useToast } from "@/components/ui/Toast";
+import type { TeamInvitation } from "@/types";
 
 interface Team {
   id: number;
@@ -20,6 +22,7 @@ interface Team {
 export default function TeamsPage() {
     const { showToast } = useToast();
     const [teams, setTeams] = useState<Team[]>([]);
+    const [invitations, setInvitations] = useState<TeamInvitation[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filter, setFilter] = useState<"all" | "joined">("all");
     const [showCreate, setShowCreate] = useState(false);
@@ -28,6 +31,7 @@ export default function TeamsPage() {
 
     useEffect(() => {
         fetchTeams();
+        fetchInvitations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter]);
 
@@ -44,15 +48,25 @@ export default function TeamsPage() {
         }
     };
 
-    const handleJoin = async (teamId: number) => {
+    const fetchInvitations = async () => {
         try {
-            const res = await fetch(`/api/teams/${teamId}/join`, { method: "POST" });
+            const res = await fetch("/api/users/team-invitations");
             if (res.ok) {
-                showToast("success", "Joined team!");
-                fetchTeams();
+                const data = await res.json();
+                setInvitations(data.invitations || []);
             }
-        } catch {
-            showToast("error", "Failed to join");
+        } catch (error) {
+            console.error("Failed to fetch invitations:", error);
+        }
+    };
+
+    const handleInvitationResponse = (invitationId: number, accepted: boolean) => {
+        setInvitations(prev => prev.filter(i => i.id !== invitationId));
+        if (accepted) {
+            showToast("success", "Joined team!");
+            fetchTeams();
+        } else {
+            showToast("info", "Invitation declined");
         }
     };
 
@@ -91,6 +105,20 @@ export default function TeamsPage() {
                 </div>
                 <Button onClick={() => setShowCreate(true)}>Create Team</Button>
             </div>
+
+            {/* Pending Invitations */}
+            {invitations.length > 0 && (
+                <div className="space-y-3">
+                    <h2 className="text-lg font-semibold text-foreground">Pending Invitations</h2>
+                    {invitations.map((invitation) => (
+                        <TeamInvitationCard
+                            key={invitation.id}
+                            invitation={invitation}
+                            onRespond={handleInvitationResponse}
+                        />
+                    ))}
+                </div>
+            )}
 
             <div className="flex gap-2">
                 <Button variant={filter === "all" ? "primary" : "ghost"} size="sm" onClick={() => setFilter("all")}>
@@ -144,14 +172,9 @@ export default function TeamsPage() {
 
                             <div className="flex items-center justify-between">
                                 <span className="text-sm text-sage-500">{team.memberCount} members</span>
-                                <div className="flex gap-2">
-                                    <Link href={`/teams/${team.id}`}>
-                                        <Button variant="outline" size="sm">View</Button>
-                                    </Link>
-                                    {!team.isJoined && (
-                                        <Button size="sm" onClick={() => handleJoin(team.id)}>Join</Button>
-                                    )}
-                                </div>
+                                <Link href={`/teams/${team.id}`}>
+                                    <Button variant="outline" size="sm">View</Button>
+                                </Link>
                             </div>
                         </Card>
                     ))}

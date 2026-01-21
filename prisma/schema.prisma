@@ -9,24 +9,26 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
-  username     String    @unique @db.VarChar(50)
-  email        String    @unique @db.VarChar(255)
-  passwordHash String    @map("password_hash")
-  displayName  String?   @map("display_name")
-  bio          String?
-  yearlyGoal   Int       @default(10000) @map("yearly_goal")
-  timezone     String    @default("Australia/Brisbane")
-  points       Int       @default(0)
-  level        Int       @default(1)
-  currentTitle String?   @map("current_title")
-  theme        String    @default("system")
-  isAdmin      Boolean   @default(false) @map("is_admin")
-  isDisabled   Boolean   @default(false) @map("is_disabled")
-  disabledAt   DateTime? @map("disabled_at")
-  disabledBy   Int?      @map("disabled_by")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
+  id                    Int       @id @default(autoincrement())
+  username              String    @unique @db.VarChar(50)
+  email                 String    @unique @db.VarChar(255)
+  passwordHash          String    @map("password_hash")
+  displayName           String?   @map("display_name")
+  bio                   String?
+  profilePicture        String?   @map("profile_picture")
+  yearlyGoal            Int       @default(10000) @map("yearly_goal")
+  timezone              String    @default("Australia/Brisbane")
+  points                Int       @default(0)
+  level                 Int       @default(1)
+  currentTitle          String?   @map("current_title")
+  theme                 String    @default("system")
+  isAdmin               Boolean   @default(false) @map("is_admin")
+  isDisabled            Boolean   @default(false) @map("is_disabled")
+  disabledAt            DateTime? @map("disabled_at")
+  disabledBy            Int?      @map("disabled_by")
+  onboardingCompletedAt DateTime? @map("onboarding_completed_at")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
 
   entries                   PushupEntry[]
   achievements              Achievement[]
@@ -41,6 +43,8 @@ model User {
   challengeParticipations   ChallengeParticipant[]
   teamsCreated              Team[]
   teamMemberships           TeamMember[]
+  teamInvitationsSent       TeamInvitation[]         @relation("InvitationsSent")
+  teamInvitationsReceived   TeamInvitation[]         @relation("InvitationsReceived")
 
   @@map("users")
 }
@@ -190,8 +194,9 @@ model Team {
   isPublic    Boolean  @default(true) @map("is_public")
   createdAt   DateTime @default(now()) @map("created_at")
 
-  creator User         @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  members TeamMember[]
+  creator     User             @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  members     TeamMember[]
+  invitations TeamInvitation[]
 
   @@map("teams")
 }
@@ -208,4 +213,22 @@ model TeamMember {
 
   @@unique([teamId, userId])
   @@map("team_members")
+}
+
+model TeamInvitation {
+  id          Int       @id @default(autoincrement())
+  teamId      Int       @map("team_id")
+  inviterId   Int       @map("inviter_id")
+  inviteeId   Int       @map("invitee_id")
+  status      String    @default("pending")
+  message     String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  respondedAt DateTime? @map("responded_at")
+
+  team    Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  inviter User @relation("InvitationsSent", fields: [inviterId], references: [id], onDelete: Cascade)
+  invitee User @relation("InvitationsReceived", fields: [inviteeId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, inviteeId])
+  @@map("team_invitations")
 }

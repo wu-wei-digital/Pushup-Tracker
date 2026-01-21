@@ -78,6 +78,16 @@ export const createTeamSchema = z.object({
     isPublic: z.boolean().default(true),
 });
 
+// Team invitation validators
+export const createTeamInvitationSchema = z.object({
+    inviteeId: z.number().int().positive("Invalid user ID"),
+    message: z.string().max(200, "Message must be at most 200 characters").optional(),
+});
+
+export const respondTeamInvitationSchema = z.object({
+    action: z.enum(["accept", "decline"]),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type CreateEntryInput = z.infer<typeof createEntrySchema>;
@@ -88,3 +98,5 @@ export type ReactionInput = z.infer<typeof reactionSchema>;
 export type CommentInput = z.infer<typeof commentSchema>;
 export type CreateChallengeInput = z.infer<typeof createChallengeSchema>;
 export type CreateTeamInput = z.infer<typeof createTeamSchema>;
+export type CreateTeamInvitationInput = z.infer<typeof createTeamInvitationSchema>;
+export type RespondTeamInvitationInput = z.infer<typeof respondTeamInvitationSchema>;

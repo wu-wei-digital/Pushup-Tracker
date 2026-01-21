@@ -69,11 +69,10 @@ export function usePomodoroTimer() {
 
         const phaseStarted = new Date(sess.phaseStartedAt).getTime();
         const elapsed = Math.floor((Date.now() - phaseStarted) / 1000);
-        const phaseDuration = sess.phase === "work"
-            ? sess.settings.workDuration * 60
-            : sess.settings.breakDuration * 60;
 
-        return Math.max(0, phaseDuration - elapsed);
+        // Use sess.timeRemaining as the starting point since it preserves
+        // the remaining time from when the session was paused/resumed
+        return Math.max(0, sess.timeRemaining - elapsed);
     }, []);
 
     // Check for existing session on mount

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button, Card } from "@/components/ui";
 import { CardSkeleton } from "@/components/ui/Skeleton";
 import { ProgressCard, DailyTargetCard, StatsGrid, StreakCard } from "@/components/dashboard";
+import { OnboardingGuide } from "@/components/onboarding";
 import { useStats } from "@/hooks/useStats";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDayChange } from "@/hooks/useDayChange";
@@ -71,6 +72,9 @@ export default function DashboardPage() {
                     </Button>
                 </Link>
             </div>
+
+            {/* Onboarding Guide for new users */}
+            <OnboardingGuide />
 
             {/* Progress and Daily Target */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

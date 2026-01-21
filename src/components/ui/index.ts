@@ -6,3 +6,4 @@ export { default as Badge } from "./Badge";
 export { default as Modal } from "./Modal";
 export { ToastProvider, useToast } from "./Toast";
 export { default as Skeleton, CardSkeleton, TableRowSkeleton, EntryItemSkeleton } from "./Skeleton";
+export { Avatar } from "./Avatar";

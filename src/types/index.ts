@@ -5,6 +5,7 @@ export interface User {
   email: string;
   displayName: string | null;
   bio: string | null;
+  profilePicture: string | null;
   yearlyGoal: number;
   timezone: string;
   points: number;
@@ -13,6 +14,7 @@ export interface User {
   theme: string;
   isAdmin: boolean;
   isDisabled: boolean;
+  onboardingCompletedAt: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -69,6 +71,7 @@ export interface PublicUser {
   username: string;
   displayName: string | null;
   bio: string | null;
+  profilePicture: string | null;
   points: number;
   level: number;
   currentTitle: string | null;
@@ -246,6 +249,21 @@ export interface TeamMember {
   joinedAt: string;
   user?: PublicUser;
   totalPushups?: number;
+}
+
+// Team invitation types
+export interface TeamInvitation {
+  id: number;
+  teamId: number;
+  inviterId: number;
+  inviteeId: number;
+  status: "pending" | "accepted" | "declined";
+  message: string | null;
+  createdAt: string;
+  respondedAt: string | null;
+  team?: Team;
+  inviter?: PublicUser;
+  invitee?: PublicUser;
 }
 
 // Activity feed types

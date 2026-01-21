@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Card, Button, Badge, ProgressBar } from "@/components/ui";
+import { InviteUserModal, PendingInvitations } from "@/components/teams";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 
@@ -11,7 +12,7 @@ interface TeamMember {
   id: number;
   userId: number;
   role: string;
-  user: { id: number; username: string; displayName: string | null; level: number };
+  user: { id: number; username: string; displayName: string | null; level: number; profilePicture?: string | null };
   totalPushups: number;
 }
 
@@ -33,6 +34,8 @@ export default function TeamDetailPage() {
     const { showToast } = useToast();
     const [team, setTeam] = useState<TeamDetail | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [showInviteModal, setShowInviteModal] = useState(false);
+    const [inviteRefreshKey, setInviteRefreshKey] = useState(0);
 
     const teamId = params.id as string;
 
@@ -53,18 +56,6 @@ export default function TeamDetailPage() {
         }
     };
 
-    const handleJoin = async () => {
-        try {
-            const res = await fetch(`/api/teams/${teamId}/join`, { method: "POST" });
-            if (res.ok) {
-                showToast("success", "Joined team!");
-                fetchTeam();
-            }
-        } catch {
-            showToast("error", "Failed to join");
-        }
-    };
-
     const handleLeave = async () => {
         try {
             const res = await fetch(`/api/teams/${teamId}/leave`, { method: "DELETE" });
@@ -78,6 +69,10 @@ export default function TeamDetailPage() {
         } catch {
             showToast("error", "Failed to leave");
         }
+    };
+
+    const handleInviteSent = () => {
+        setInviteRefreshKey(prev => prev + 1);
     };
 
     if (isLoading) {
@@ -98,6 +93,7 @@ export default function TeamDetailPage() {
     }
 
     const progress = (team.totalPushups / team.teamGoal) * 100;
+    const isAdmin = team.userRole === "admin";
 
     return (
         <div className="space-y-6">
@@ -114,8 +110,8 @@ export default function TeamDetailPage() {
                         )}
                     </div>
                     {team.isJoined && (
-                        <Badge variant={team.userRole === "admin" ? "primary" : "default"}>
-                            {team.userRole === "admin" ? "Admin" : "Member"}
+                        <Badge variant={isAdmin ? "primary" : "default"}>
+                            {isAdmin ? "Admin" : "Member"}
                         </Badge>
                     )}
                 </div>
@@ -135,14 +131,35 @@ export default function TeamDetailPage() {
                     />
                 </div>
 
-                <div className="flex justify-end">
-                    {team.isJoined ? (
+                <div className="flex justify-end gap-2">
+                    {isAdmin && (
+                        <Button variant="outline" onClick={() => setShowInviteModal(true)}>
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            Invite Members
+                        </Button>
+                    )}
+                    {team.isJoined && (
                         <Button variant="outline" onClick={handleLeave}>Leave Team</Button>
-                    ) : (
-                        <Button onClick={handleJoin}>Join Team</Button>
+                    )}
+                    {!team.isJoined && (
+                        <p className="text-sage-500 text-sm py-2">
+                            Contact a team admin to request an invitation
+                        </p>
                     )}
                 </div>
             </Card>
+
+            {/* Pending Invitations (Admin only) */}
+            {isAdmin && (
+                <Card>
+                    <h2 className="text-lg font-semibold text-foreground mb-4">
+                        Pending Invitations
+                    </h2>
+                    <PendingInvitations teamId={team.id} refreshKey={inviteRefreshKey} />
+                </Card>
+            )}
 
             <Card>
                 <h2 className="text-lg font-semibold text-foreground mb-4">
@@ -162,6 +179,17 @@ export default function TeamDetailPage() {
                                 <span className="text-lg font-bold text-gray-400 w-8">
                                     {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
                                 </span>
+                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-medium overflow-hidden">
+                                    {member.user.profilePicture ? (
+                                        <img
+                                            src={member.user.profilePicture}
+                                            alt=""
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        (member.user.displayName || member.user.username).charAt(0).toUpperCase()
+                                    )}
+                                </div>
                                 <Link href={`/profile/${member.userId}`} className="hover:underline">
                                     <span className="font-medium text-foreground">
                                         {member.user.displayName || member.user.username}
@@ -178,6 +206,14 @@ export default function TeamDetailPage() {
                     ))}
                 </div>
             </Card>
+
+            {/* Invite Modal */}
+            <InviteUserModal
+                isOpen={showInviteModal}
+                onClose={() => setShowInviteModal(false)}
+                teamId={team.id}
+                onInviteSent={handleInviteSent}
+            />
         </div>
     );
 }

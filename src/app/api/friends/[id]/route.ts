@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
+import { checkAndAwardAchievements } from "@/lib/checkAchievements";
 
 export async function PATCH(
     request: NextRequest,
@@ -58,6 +59,12 @@ export async function PATCH(
                     link: `/profile/${payload.userId}`,
                 },
             });
+
+            // Check achievements for both users (friend-related badges)
+            await Promise.all([
+                checkAndAwardAchievements(payload.userId),
+                checkAndAwardAchievements(friendship.userId),
+            ]);
 
             return NextResponse.json({ friendship: updatedFriendship });
         } else {
