@@ -184,7 +184,7 @@ export default function FeedPage() {
                     Did <span className="text-sage-600">{entry.data.amount}</span> pushup{entry.data.amount !== 1 ? "s" : ""}
                   </p>
                   {entry.data.source === "pomodoro" && (
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-100 text-red-700 text-xs font-medium rounded-full">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-coral-100 text-coral-700 text-xs font-medium rounded-full border border-coral-200">
                       🍅 Pomodoro
                     </span>
                   )}

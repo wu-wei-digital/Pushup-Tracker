@@ -26,18 +26,6 @@ export default function PomodoroTimer({
   const isBreak = session.phase === "break";
   const isWork = session.phase === "work";
 
-  const phaseColors = {
-    work: "text-blue-600",
-    break: "text-green-600",
-    paused: "text-amber-600",
-  };
-
-  const phaseLabels = {
-    work: "Focus Time",
-    break: "Break Time",
-    paused: "Paused",
-  };
-
   const handleQuickAdd = () => {
     if (quickAddAmount > 0) {
       onAddPushups(quickAddAmount);
@@ -50,32 +38,34 @@ export default function PomodoroTimer({
       {/* Phase indicator */}
       <div>
         <span
-          className={`inline-block px-4 py-1 rounded-full text-sm font-medium ${
+          className={`inline-block px-4 py-1.5 rounded-full text-sm font-medium ${
             isBreak
-              ? "bg-green-100 text-green-700"
+              ? "bg-coral-100 text-coral-700 border border-coral-200"
               : isWork
-              ? "bg-blue-100 text-blue-700"
-              : "bg-amber-100 text-amber-700"
+              ? "bg-sage-100 text-sage-700 border border-sage-200"
+              : "bg-amber-100 text-amber-700 border border-amber-200"
           }`}
         >
-          {phaseLabels[session.phase as keyof typeof phaseLabels] || session.phase}
+          {isBreak ? "Break Time" : isWork ? "Focus Time" : "Paused"}
         </span>
       </div>
 
       {/* Timer display */}
-      <div className={`text-7xl font-bold font-mono ${phaseColors[session.phase as keyof typeof phaseColors] || "text-foreground"}`}>
+      <div className={`text-7xl font-bold font-mono ${
+        isBreak ? "text-coral-600" : isWork ? "text-sage-600" : "text-amber-600"
+      }`}>
         {formattedTime}
       </div>
 
       {/* Cycle counter */}
       <div className="text-sage-600">
-        Cycle {session.currentCycle} | Total: {session.totalPushups} pushups
+        Cycle {session.currentCycle} | Total: <span className="font-semibold text-coral-600">{session.totalPushups}</span> pushups
       </div>
 
       {/* Break-only: Quick add pushups */}
       {isBreak && (
-        <div className="bg-green-50 rounded-xl p-4 space-y-3">
-          <p className="text-sm text-green-700 font-medium">
+        <div className="bg-coral-50 rounded-xl p-4 space-y-3 border border-coral-100">
+          <p className="text-sm text-coral-700 font-medium">
             Time to do some pushups!
           </p>
           <div className="flex items-center gap-2 justify-center">
@@ -87,16 +77,19 @@ export default function PomodoroTimer({
               max={100}
               className="w-20 text-center"
             />
-            <Button onClick={handleQuickAdd} size="sm">
-              + Add Pushups
-            </Button>
+            <button
+              onClick={handleQuickAdd}
+              className="px-4 py-2 bg-coral-500 text-white rounded-lg hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 active:scale-[0.98] transition-all duration-200 text-sm font-medium"
+            >
+              + Add
+            </button>
           </div>
-          <div className="flex gap-2 justify-center">
+          <div className="flex gap-2 justify-center flex-wrap">
             {[5, 10, 15, 20].map((amount) => (
               <button
                 key={amount}
                 onClick={() => onAddPushups(amount)}
-                className="px-3 py-1 bg-green-100 hover:bg-green-200 text-green-700 rounded-lg text-sm font-medium transition-colors"
+                className="px-3 py-1.5 bg-coral-100 hover:bg-coral-200 text-coral-700 rounded-lg text-sm font-medium transition-colors border border-coral-200"
               >
                 +{amount}
               </button>
@@ -107,8 +100,8 @@ export default function PomodoroTimer({
 
       {/* Work phase message */}
       {isWork && (
-        <div className="bg-blue-50 rounded-xl p-4">
-          <p className="text-sm text-blue-700">
+        <div className="bg-sage-50 rounded-xl p-4 border border-sage-100">
+          <p className="text-sm text-sage-700">
             Stay focused! Pushups will be available during breaks.
           </p>
         </div>
@@ -116,7 +109,7 @@ export default function PomodoroTimer({
 
       {/* Paused message */}
       {isPaused && (
-        <div className="bg-amber-50 rounded-xl p-4">
+        <div className="bg-amber-50 rounded-xl p-4 border border-amber-100">
           <p className="text-sm text-amber-700">
             Session paused. Resume when ready.
           </p>
@@ -126,15 +119,18 @@ export default function PomodoroTimer({
       {/* Control buttons */}
       <div className="flex gap-3 pt-4">
         {isPaused ? (
-          <Button onClick={onResume} className="flex-1">
+          <button
+            onClick={onResume}
+            className="flex-1 btn-md rounded-lg bg-coral-500 text-white hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 active:scale-[0.98] transition-all duration-200 font-medium"
+          >
             Resume
-          </Button>
+          </button>
         ) : (
           <Button onClick={onPause} variant="ghost" className="flex-1">
             Pause
           </Button>
         )}
-        <Button onClick={onStop} variant="ghost" className="flex-1 text-red-600 hover:bg-red-50">
+        <Button onClick={onStop} variant="ghost" className="flex-1 !text-coral-600 hover:!bg-coral-50">
           End Session
         </Button>
       </div>

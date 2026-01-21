@@ -81,9 +81,12 @@ export default function PomodoroSettings({ onStart, onCancel }: PomodoroSettings
         <Button type="button" variant="ghost" onClick={onCancel} className="flex-1">
           Cancel
         </Button>
-        <Button type="submit" className="flex-1">
+        <button
+          type="submit"
+          className="flex-1 btn-md rounded-lg bg-coral-500 text-white hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 active:scale-[0.98] transition-all duration-200 font-medium"
+        >
           Start Session
-        </Button>
+        </button>
       </div>
     </form>
   );

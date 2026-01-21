@@ -42,30 +42,30 @@ export default function PomodoroSummary({
       </div>
 
       {/* Stats grid */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-sage-50 rounded-xl p-4">
-          <div className="text-3xl font-bold text-primary-600">
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-coral-50 rounded-xl p-4 border border-coral-100">
+          <div className="text-3xl font-bold text-coral-600">
             {summary.totalPushups}
           </div>
-          <div className="text-sm text-sage-600">Total Pushups</div>
+          <div className="text-sm text-coral-700">Total Pushups</div>
         </div>
-        <div className="bg-sage-50 rounded-xl p-4">
-          <div className="text-3xl font-bold text-primary-600">
+        <div className="bg-sage-50 rounded-xl p-4 border border-sage-100">
+          <div className="text-3xl font-bold text-sage-600">
             {summary.cyclesCompleted}
           </div>
-          <div className="text-sm text-sage-600">Cycles Completed</div>
+          <div className="text-sm text-sage-700">Cycles</div>
         </div>
-        <div className="bg-sage-50 rounded-xl p-4">
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-sage-50 rounded-xl p-4 border border-sage-100">
+          <div className="text-2xl font-bold text-sage-600">
             {formatDuration(summary.workTime)}
           </div>
-          <div className="text-sm text-sage-600">Focus Time</div>
+          <div className="text-sm text-sage-700">Focus Time</div>
         </div>
-        <div className="bg-sage-50 rounded-xl p-4">
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-coral-50 rounded-xl p-4 border border-coral-100">
+          <div className="text-2xl font-bold text-coral-600">
             {formatDuration(summary.breakTime)}
           </div>
-          <div className="text-sm text-sage-600">Break Time</div>
+          <div className="text-sm text-coral-700">Break Time</div>
         </div>
       </div>
 
@@ -89,14 +89,17 @@ export default function PomodoroSummary({
             No pushups were logged during this session.
           </p>
         ) : (
-          <Button
+          <button
             onClick={onConfirm}
-            className="w-full"
             disabled={isSubmitting}
-            isLoading={isSubmitting}
+            className="w-full btn-md rounded-lg bg-coral-500 text-white hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 active:scale-[0.98] transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Upload {summary.totalPushups} Pushups
-          </Button>
+            {isSubmitting ? (
+              <span className="animate-spin inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
+            ) : (
+              <>Upload {summary.totalPushups} Pushups</>
+            )}
+          </button>
         )}
         <Button onClick={onDiscard} variant="ghost" className="w-full" disabled={isSubmitting}>
           {hasNoPushups ? "Close" : "Discard Session"}

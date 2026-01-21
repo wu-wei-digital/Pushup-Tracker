@@ -113,12 +113,15 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-foreground/50 backdrop-blur-sm"
         onClick={isActive ? onClose : handleClose}
       />
 
       {/* Modal */}
-      <div className="relative bg-background rounded-2xl shadow-xl w-full max-w-md mx-4 p-6 max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-white rounded-2xl border border-sage-100 shadow-lg shadow-sage-500/10 w-full max-w-md mx-4 p-6 max-h-[90vh] overflow-y-auto animate-fade-in">
+        {/* Coral accent bar at top */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-coral-400 via-coral-500 to-coral-600 rounded-t-2xl" />
+
         {/* Close button */}
         <button
           onClick={isActive ? onClose : handleClose}
@@ -142,7 +145,7 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
         </button>
 
         {/* Pomodoro icon */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 mt-2">
           <span className="text-4xl">🍅</span>
         </div>
 
@@ -160,8 +163,8 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
               You have an active pomodoro session. Would you like to continue?
             </p>
             {session && (
-              <div className="bg-sage-50 rounded-xl p-4 text-sm text-sage-700">
-                <div>Cycle {session.currentCycle}</div>
+              <div className="bg-coral-50 rounded-xl p-4 text-sm text-coral-700 border border-coral-100">
+                <div className="font-medium">Cycle {session.currentCycle}</div>
                 <div>{session.totalPushups} pushups logged</div>
               </div>
             )}
@@ -169,9 +172,12 @@ export default function PomodoroModal({ isOpen, onClose, onComplete }: PomodoroM
               <Button onClick={handleStartNew} variant="ghost" className="flex-1">
                 Start New
               </Button>
-              <Button onClick={handleResume} className="flex-1">
+              <button
+                onClick={handleResume}
+                className="flex-1 btn-md rounded-lg bg-coral-500 text-white hover:bg-coral-600 hover:shadow-lg hover:shadow-coral-500/25 active:scale-[0.98] transition-all duration-200 font-medium"
+              >
                 Resume
-              </Button>
+              </button>
             </div>
           </div>
         )}

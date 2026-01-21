@@ -105,7 +105,7 @@ export default function QuickAddButtons({ onAdd }: QuickAddButtonsProps) {
       {/* Pomodoro Mode Button */}
       <button
         onClick={() => setShowPomodoroModal(true)}
-        className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+        className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white font-medium shadow-md hover:shadow-lg hover:shadow-coral-500/25 transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
       >
         <span>🍅</span>
         <span>Start Pomodoro Mode</span>
