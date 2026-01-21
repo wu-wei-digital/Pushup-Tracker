@@ -10,6 +10,14 @@ import {
     DEFAULT_POMODORO_SETTINGS,
     POMODORO_STORAGE_KEY,
 } from "@/types/pomodoro";
+import {
+    ensureAudioContextResumed,
+    playTickSound,
+    playUrgentWarning,
+    playCompletionSound,
+    playBreakSound,
+    playWorkSound,
+} from "@/lib/sounds";
 
 const SESSION_EXPIRY_HOURS = 24;
 
@@ -144,6 +152,9 @@ export function usePomodoroTimer() {
     const handlePhaseTransition = useCallback((currentSession: PomodoroSessionState) => {
         if (currentSession.phase === "work") {
             // Work -> Break
+            playCompletionSound();
+            setTimeout(() => playBreakSound(), 600);
+
             const newSession: PomodoroSessionState = {
                 ...currentSession,
                 phase: "break",
@@ -155,6 +166,9 @@ export function usePomodoroTimer() {
             setDisplayTime(formatTime(currentSession.settings.breakDuration * 60));
         } else if (currentSession.phase === "break") {
             // Break -> Work (new cycle)
+            playCompletionSound();
+            setTimeout(() => playWorkSound(), 600);
+
             const newSession: PomodoroSessionState = {
                 ...currentSession,
                 phase: "work",
@@ -200,6 +214,13 @@ export function usePomodoroTimer() {
             } else {
                 setDisplayTime(formatTime(currentRemaining));
 
+                // Play warning sounds in the last 10 seconds
+                if (currentRemaining <= 10 && currentRemaining > 3) {
+                    playTickSound(0.3);
+                } else if (currentRemaining <= 3 && currentRemaining > 0) {
+                    playUrgentWarning(0.4);
+                }
+
                 // Save periodically (every 10 seconds) to persist state
                 if (timeSinceLastTick < 2000 && currentRemaining % 10 === 0) {
                     const updatedSession = { ...session, timeRemaining: currentRemaining };
@@ -218,6 +239,9 @@ export function usePomodoroTimer() {
     }, [session?.phase, session?.phaseStartedAt, calculateTimeRemaining, formatTime, handlePhaseTransition]);
 
     const startSession = useCallback((settings: PomodoroSettings = DEFAULT_POMODORO_SETTINGS) => {
+        // Ensure audio context is ready for sounds
+        ensureAudioContextResumed();
+
         const newSession: PomodoroSessionState = {
             phase: "work",
             timeRemaining: settings.workDuration * 60,
@@ -233,10 +257,16 @@ export function usePomodoroTimer() {
         setHasExistingSession(false);
         saveSession(newSession);
         lastTickRef.current = Date.now();
+
+        // Play a sound to confirm session started
+        playWorkSound(0.3);
     }, []);
 
     const resumeSession = useCallback(() => {
         if (!session || session.phase !== "paused" || !session.previousPhase) return;
+
+        // Ensure audio context is ready for sounds
+        ensureAudioContextResumed();
 
         const resumedSession: PomodoroSessionState = {
             ...session,
@@ -250,6 +280,9 @@ export function usePomodoroTimer() {
         setHasExistingSession(false);
         saveSession(resumedSession);
         lastTickRef.current = Date.now();
+
+        // Play a subtle sound to confirm resume
+        playTickSound(0.2);
     }, [session]);
 
     const pauseSession = useCallback(() => {
