@@ -4,6 +4,7 @@ import Link from "next/link";
 import { clsx } from "clsx";
 import type { LeaderboardEntry } from "@/types";
 import { TableRowSkeleton } from "@/components/ui/Skeleton";
+import { Avatar } from "@/components/ui";
 
 interface LeaderboardTableProps {
   entries: LeaderboardEntry[];
@@ -123,11 +124,11 @@ export default function LeaderboardTable({
                                         href={`/profile/${entry.user.id}`}
                                         className="flex items-center gap-3 hover:underline"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-                                            <span className="text-primary-600 font-medium text-sm">
-                                                {(entry.user.displayName || entry.user.username).charAt(0).toUpperCase()}
-                                            </span>
-                                        </div>
+                                        <Avatar
+                                            src={entry.user.profilePicture}
+                                            name={entry.user.displayName || entry.user.username}
+                                            size="sm"
+                                        />
                                         <div>
                                             <p
                                                 className={clsx(

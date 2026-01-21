@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import NotificationBell from "../notifications/NotificationBell";
+import { Avatar } from "@/components/ui";
 
 export default function Header() {
     const { user, logout } = useAuth();
@@ -36,11 +37,11 @@ export default function Header() {
                                         href="/profile"
                                         className="flex items-center gap-2 text-sm text-sage-700 hover:text-sage-900 transition-colors"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-sage-100 flex items-center justify-center">
-                                            <span className="text-sage-600 font-medium">
-                                                {user.username.charAt(0).toUpperCase()}
-                                            </span>
-                                        </div>
+                                        <Avatar
+                                            src={user.profilePicture}
+                                            name={user.displayName || user.username}
+                                            size="sm"
+                                        />
                                         <span className="font-medium">{user.displayName || user.username}</span>
                                     </Link>
 

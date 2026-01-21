@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Card, Button, Badge } from "@/components/ui";
+import { Card, Button, Badge, Avatar } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 
@@ -12,6 +12,7 @@ interface ProfileData {
     id: number;
     username: string;
     displayName: string | null;
+    profilePicture: string | null;
     bio: string | null;
     yearlyGoal: number;
     points: number;
@@ -173,10 +174,12 @@ export default function UserProfilePage() {
             <Card>
                 <div className="flex flex-col items-center text-center">
                     {/* Avatar */}
-                    <div className="w-24 h-24 rounded-full bg-primary-100 flex items-center justify-center mb-4">
-                        <span className="text-primary-600 font-bold text-4xl">
-                            {(user.displayName || user.username).charAt(0).toUpperCase()}
-                        </span>
+                    <div className="mb-4">
+                        <Avatar
+                            src={user.profilePicture}
+                            name={user.displayName || user.username}
+                            size="xl"
+                        />
                     </div>
 
                     <h2 className="text-xl font-bold text-gray-900">

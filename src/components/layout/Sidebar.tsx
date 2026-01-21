@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
 import { useAuth } from "@/contexts/AuthContext";
+import { Avatar } from "@/components/ui";
 
 const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: "home" },
@@ -112,11 +113,11 @@ export default function Sidebar() {
             {/* User info at bottom */}
             <div className="p-4 border-t border-sage-100">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
-                        <span className="text-sage-600 font-semibold">
-                            {user.username.charAt(0).toUpperCase()}
-                        </span>
-                    </div>
+                    <Avatar
+                        src={user.profilePicture}
+                        name={user.displayName || user.username}
+                        size="md"
+                    />
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">
                             {user.displayName || user.username}

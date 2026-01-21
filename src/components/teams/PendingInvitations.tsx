@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Button } from "@/components/ui";
+import { Button, Avatar } from "@/components/ui";
 import type { TeamInvitation } from "@/types";
 
 interface PendingInvitationsProps {
@@ -74,9 +74,11 @@ export function PendingInvitations({ teamId, refreshKey }: PendingInvitationsPro
                     className="flex items-center justify-between p-3 bg-sage-50 rounded-lg"
                 >
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 text-sm font-medium">
-                            {(invitation.invitee?.displayName || invitation.invitee?.username || "?").charAt(0).toUpperCase()}
-                        </div>
+                        <Avatar
+                            src={invitation.invitee?.profilePicture}
+                            name={invitation.invitee?.displayName || invitation.invitee?.username || "?"}
+                            size="sm"
+                        />
                         <div>
                             <p className="font-medium text-sage-800 text-sm">
                                 {invitation.invitee?.displayName || invitation.invitee?.username}

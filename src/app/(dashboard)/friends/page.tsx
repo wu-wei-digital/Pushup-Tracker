@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Card, Button, Input, Badge } from "@/components/ui";
+import { Card, Button, Input, Badge, Avatar } from "@/components/ui";
 import { useToast } from "@/components/ui/Toast";
 
 interface Friend {
@@ -11,6 +11,7 @@ interface Friend {
     id: number;
     username: string;
     displayName: string | null;
+    profilePicture: string | null;
     level: number;
     currentTitle: string | null;
   };
@@ -22,6 +23,7 @@ interface SearchUser {
   id: number;
   username: string;
   displayName: string | null;
+  profilePicture: string | null;
   level: number;
   friendshipStatus: { id: number; status: string; isInitiator: boolean } | null;
 }
@@ -207,11 +209,11 @@ export default function FriendsPage() {
                             {friends.map((friend) => (
                                 <div key={friend.id} className="flex items-center justify-between p-3 rounded-lg bg-sage-50">
                                     <Link href={`/profile/${friend.user.id}`} className="flex items-center gap-3 hover:underline">
-                                        <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
-                                            <span className="text-sage-600 font-medium">
-                                                {(friend.user.displayName || friend.user.username).charAt(0).toUpperCase()}
-                                            </span>
-                                        </div>
+                                        <Avatar
+                                            src={friend.user.profilePicture}
+                                            name={friend.user.displayName || friend.user.username}
+                                            size="md"
+                                        />
                                         <div>
                                             <p className="font-medium text-foreground">
                                                 {friend.user.displayName || friend.user.username}
@@ -246,11 +248,11 @@ export default function FriendsPage() {
                             {requests.map((request) => (
                                 <div key={request.id} className="flex items-center justify-between p-3 rounded-lg bg-sage-50">
                                     <Link href={`/profile/${request.user.id}`} className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
-                                            <span className="text-sage-600 font-medium">
-                                                {(request.user.displayName || request.user.username).charAt(0).toUpperCase()}
-                                            </span>
-                                        </div>
+                                        <Avatar
+                                            src={request.user.profilePicture}
+                                            name={request.user.displayName || request.user.username}
+                                            size="md"
+                                        />
                                         <div>
                                             <p className="font-medium text-foreground">
                                                 {request.user.displayName || request.user.username}
@@ -295,11 +297,11 @@ export default function FriendsPage() {
                                 {searchResults.map((user) => (
                                     <div key={user.id} className="flex items-center justify-between p-3 rounded-lg bg-sage-50">
                                         <Link href={`/profile/${user.id}`} className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
-                                                <span className="text-sage-600 font-medium">
-                                                    {(user.displayName || user.username).charAt(0).toUpperCase()}
-                                                </span>
-                                            </div>
+                                            <Avatar
+                                                src={user.profilePicture}
+                                                name={user.displayName || user.username}
+                                                size="md"
+                                            />
                                             <div>
                                                 <p className="font-medium text-foreground">
                                                     {user.displayName || user.username}

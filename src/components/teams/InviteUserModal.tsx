@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Modal, Button, Input } from "@/components/ui";
+import { Modal, Button, Input, Avatar } from "@/components/ui";
 import type { PublicUser } from "@/types";
 
 interface InviteUserModalProps {
@@ -130,9 +130,11 @@ export function InviteUserModal({ isOpen, onClose, teamId, onInviteSent }: Invit
                                 className="flex items-center justify-between p-3 bg-sage-50 rounded-lg"
                             >
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
-                                        {(user.displayName || user.username).charAt(0).toUpperCase()}
-                                    </div>
+                                    <Avatar
+                                        src={user.profilePicture}
+                                        name={user.displayName || user.username}
+                                        size="md"
+                                    />
                                     <div>
                                         <p className="font-medium text-sage-800">
                                             {user.displayName || user.username}

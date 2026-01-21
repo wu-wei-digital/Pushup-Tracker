@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { Card, Button, Input } from "@/components/ui";
+import { Card, Button, Input, Avatar } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 import { REACTION_EMOJIS, type ReactionType } from "@/types";
@@ -15,6 +15,7 @@ interface FeedEntry {
     id: number;
     username: string;
     displayName: string | null;
+    profilePicture: string | null;
     level: number;
   };
   data: {
@@ -161,11 +162,11 @@ export default function FeedPage() {
                             {/* Header */}
                             <div className="flex items-center gap-3 mb-4">
                                 <Link href={`/profile/${entry.user.id}`}>
-                                    <div className="w-10 h-10 rounded-full bg-sage-100 flex items-center justify-center">
-                                        <span className="text-sage-600 font-medium">
-                                            {(entry.user.displayName || entry.user.username).charAt(0).toUpperCase()}
-                                        </span>
-                                    </div>
+                                    <Avatar
+                                        src={entry.user.profilePicture}
+                                        name={entry.user.displayName || entry.user.username}
+                                        size="md"
+                                    />
                                 </Link>
                                 <div className="flex-1">
                                     <Link href={`/profile/${entry.user.id}`} className="font-medium text-foreground hover:underline">

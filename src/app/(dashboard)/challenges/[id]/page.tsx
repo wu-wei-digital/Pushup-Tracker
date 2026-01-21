@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Card, Button, Badge } from "@/components/ui";
+import { Card, Button, Badge, Avatar } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 
 interface Participant {
   id: number;
   userId: number;
-  user: { id: number; username: string; displayName: string | null; level: number };
+  user: { id: number; username: string; displayName: string | null; profilePicture?: string | null; level: number };
   totalPushups: number;
 }
 
@@ -170,6 +170,11 @@ export default function ChallengeDetailPage() {
                                     <span className="text-lg font-bold text-gray-400 w-8">
                                         {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
                                     </span>
+                                    <Avatar
+                                        src={participant.user.profilePicture}
+                                        name={participant.user.displayName || participant.user.username}
+                                        size="sm"
+                                    />
                                     <Link href={`/profile/${participant.userId}`} className="hover:underline">
                                         <span className="font-medium text-foreground">
                                             {participant.user.displayName || participant.user.username}

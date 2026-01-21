@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Card, Button, Input, Badge, Modal } from "@/components/ui";
+import { Card, Button, Input, Badge, Modal, Avatar } from "@/components/ui";
 import { useToast } from "@/components/ui/Toast";
 import type { AdminUser } from "@/types";
 
@@ -261,9 +261,10 @@ export default function AdminUsersPage() {
                                     <tr key={user.id} className="border-b border-sage-50 hover:bg-sage-25">
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-sage-100 flex items-center justify-center text-sm font-medium text-sage-700">
-                                                    {(user.displayName || user.username).charAt(0).toUpperCase()}
-                                                </div>
+                                                <Avatar
+                                                    name={user.displayName || user.username}
+                                                    size="sm"
+                                                />
                                                 <div>
                                                     <p className="font-medium text-foreground">
                                                         {user.displayName || user.username}
