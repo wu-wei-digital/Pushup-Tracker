@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui";
 import type { TeamInvitation } from "@/types";
 
@@ -14,11 +14,7 @@ export function PendingInvitations({ teamId, refreshKey }: PendingInvitationsPro
     const [isLoading, setIsLoading] = useState(true);
     const [cancellingId, setCancellingId] = useState<number | null>(null);
 
-    useEffect(() => {
-        fetchInvitations();
-    }, [teamId, refreshKey]);
-
-    const fetchInvitations = async () => {
+    const fetchInvitations = useCallback(async () => {
         try {
             const res = await fetch(`/api/teams/${teamId}/invitations`);
             if (res.ok) {
@@ -31,7 +27,11 @@ export function PendingInvitations({ teamId, refreshKey }: PendingInvitationsPro
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [teamId]);
+
+    useEffect(() => {
+        fetchInvitations();
+    }, [fetchInvitations, refreshKey]);
 
     const handleCancel = async (invitationId: number) => {
         setCancellingId(invitationId);

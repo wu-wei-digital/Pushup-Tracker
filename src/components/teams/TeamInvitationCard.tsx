@@ -60,7 +60,7 @@ export function TeamInvitationCard({ invitation, onRespond }: TeamInvitationCard
                     </div>
                     {invitation.message && (
                         <p className="text-sm text-sage-700 mt-2 italic">
-                            "{invitation.message}"
+                            &ldquo;{invitation.message}&rdquo;
                         </p>
                     )}
                 </div>

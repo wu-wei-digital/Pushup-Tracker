@@ -134,7 +134,7 @@ export function OnboardingGuide() {
             {progress.isComplete && (
                 <div className="mt-4 p-3 bg-green-50 rounded-lg text-center">
                     <p className="text-sm font-medium text-green-700">
-                        Congratulations! You've completed all the getting started steps!
+                        Congratulations! You&apos;ve completed all the getting started steps!
                     </p>
                 </div>
             )}

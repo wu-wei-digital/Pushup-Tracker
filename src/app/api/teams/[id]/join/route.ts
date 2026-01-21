@@ -1,11 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 
 // Direct joining is no longer supported - teams are invitation-only
-export async function POST(
-    request: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) {
+export async function POST() {
     const payload = await getCurrentUser();
     if (!payload) {
         return NextResponse.json({ error: "Not authenticated" }, { status: 401 });

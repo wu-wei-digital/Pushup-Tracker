@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Card, Button, Badge, ProgressBar } from "@/components/ui";
+import { Card, Button, Badge, ProgressBar, Avatar } from "@/components/ui";
 import { InviteUserModal, PendingInvitations } from "@/components/teams";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/Toast";
@@ -179,17 +179,11 @@ export default function TeamDetailPage() {
                                 <span className="text-lg font-bold text-gray-400 w-8">
                                     {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
                                 </span>
-                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-medium overflow-hidden">
-                                    {member.user.profilePicture ? (
-                                        <img
-                                            src={member.user.profilePicture}
-                                            alt=""
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        (member.user.displayName || member.user.username).charAt(0).toUpperCase()
-                                    )}
-                                </div>
+                                <Avatar
+                                    src={member.user.profilePicture}
+                                    name={member.user.displayName || member.user.username}
+                                    size="sm"
+                                />
                                 <Link href={`/profile/${member.userId}`} className="hover:underline">
                                     <span className="font-medium text-foreground">
                                         {member.user.displayName || member.user.username}

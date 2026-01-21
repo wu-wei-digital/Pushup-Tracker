@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 interface AvatarProps {
     src?: string | null;
@@ -16,6 +17,13 @@ const sizeClasses = {
     xl: "w-24 h-24 text-4xl",
 };
 
+const sizePx = {
+    sm: 32,
+    md: 40,
+    lg: 64,
+    xl: 96,
+};
+
 export function Avatar({ src, name, size = "md", className = "" }: AvatarProps) {
     const [hasError, setHasError] = useState(false);
 
@@ -24,11 +32,14 @@ export function Avatar({ src, name, size = "md", className = "" }: AvatarProps) 
     if (src && !hasError) {
         return (
             <div className={`relative rounded-full overflow-hidden bg-primary/10 ${sizeClasses[size]} ${className}`}>
-                <img
+                <Image
                     src={src}
                     alt={name}
+                    width={sizePx[size]}
+                    height={sizePx[size]}
                     className="w-full h-full object-cover"
                     onError={() => setHasError(true)}
+                    unoptimized={src.startsWith("data:")}
                 />
             </div>
         );
