@@ -14,62 +14,62 @@ import { useEffect, useRef, useCallback } from "react";
  * @param timezone - Optional timezone to use for day calculation (defaults to browser timezone)
  */
 export function useDayChange(onDayChange: () => void, timezone?: string) {
-  const lastDateRef = useRef<string>("");
+    const lastDateRef = useRef<string>("");
 
-  const getCurrentDateString = useCallback(() => {
-    const now = new Date();
-    const tz = timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const getCurrentDateString = useCallback(() => {
+        const now = new Date();
+        const tz = timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    try {
-      return new Intl.DateTimeFormat("en-CA", {
-        timeZone: tz,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(now);
-    } catch {
-      // Fallback if timezone is invalid
-      return now.toISOString().split("T")[0];
-    }
-  }, [timezone]);
+        try {
+            return new Intl.DateTimeFormat("en-CA", {
+                timeZone: tz,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+            }).format(now);
+        } catch {
+            // Fallback if timezone is invalid
+            return now.toISOString().split("T")[0];
+        }
+    }, [timezone]);
 
-  const checkDayChange = useCallback(() => {
-    const currentDate = getCurrentDateString();
+    const checkDayChange = useCallback(() => {
+        const currentDate = getCurrentDateString();
 
-    if (lastDateRef.current && lastDateRef.current !== currentDate) {
-      // Day has changed
-      onDayChange();
-    }
+        if (lastDateRef.current && lastDateRef.current !== currentDate) {
+            // Day has changed
+            onDayChange();
+        }
 
-    lastDateRef.current = currentDate;
-  }, [getCurrentDateString, onDayChange]);
+        lastDateRef.current = currentDate;
+    }, [getCurrentDateString, onDayChange]);
 
-  useEffect(() => {
+    useEffect(() => {
     // Initialize the date reference
-    lastDateRef.current = getCurrentDateString();
+        lastDateRef.current = getCurrentDateString();
 
-    // Check when the page becomes visible
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        checkDayChange();
-      }
-    };
+        // Check when the page becomes visible
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === "visible") {
+                checkDayChange();
+            }
+        };
 
-    // Check periodically (every minute)
-    const intervalId = setInterval(checkDayChange, 60000);
+        // Check periodically (every minute)
+        const intervalId = setInterval(checkDayChange, 60000);
 
-    // Also check when the window gains focus
-    const handleFocus = () => {
-      checkDayChange();
-    };
+        // Also check when the window gains focus
+        const handleFocus = () => {
+            checkDayChange();
+        };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("focus", handleFocus);
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        window.addEventListener("focus", handleFocus);
 
-    return () => {
-      clearInterval(intervalId);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("focus", handleFocus);
-    };
-  }, [checkDayChange, getCurrentDateString]);
+        return () => {
+            clearInterval(intervalId);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+            window.removeEventListener("focus", handleFocus);
+        };
+    }, [checkDayChange, getCurrentDateString]);
 }

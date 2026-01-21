@@ -30,9 +30,9 @@ export interface PomodoroSummary {
 }
 
 export const DEFAULT_POMODORO_SETTINGS: PomodoroSettings = {
-  workDuration: 25,
-  breakDuration: 5,
-  pushupTarget: 10,
+    workDuration: 25,
+    breakDuration: 5,
+    pushupTarget: 10,
 };
 
 export const POMODORO_STORAGE_KEY = "pomodoro_session";

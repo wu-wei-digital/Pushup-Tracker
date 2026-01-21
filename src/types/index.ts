@@ -152,11 +152,11 @@ export interface Reaction {
 export type ReactionType = "strong" | "fire" | "applause" | "party" | "wow";
 
 export const REACTION_EMOJIS: Record<ReactionType, string> = {
-  strong: "💪",
-  fire: "🔥",
-  applause: "👏",
-  party: "🎉",
-  wow: "😮",
+    strong: "💪",
+    fire: "🔥",
+    applause: "👏",
+    party: "🎉",
+    wow: "😮",
 };
 
 export interface Comment {

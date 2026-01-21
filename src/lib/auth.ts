@@ -12,40 +12,40 @@ export interface JWTPayload {
 }
 
 export function signToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
 }
 
 export function verifyToken(token: string): JWTPayload | null {
-  try {
-    return jwt.verify(token, JWT_SECRET) as JWTPayload;
-  } catch {
-    return null;
-  }
+    try {
+        return jwt.verify(token, JWT_SECRET) as JWTPayload;
+    } catch {
+        return null;
+    }
 }
 
 export async function getTokenFromCookies(): Promise<string | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME);
-  return token?.value || null;
+    const cookieStore = await cookies();
+    const token = cookieStore.get(COOKIE_NAME);
+    return token?.value || null;
 }
 
 export async function getCurrentUser(): Promise<JWTPayload | null> {
-  const token = await getTokenFromCookies();
-  if (!token) return null;
-  return verifyToken(token);
+    const token = await getTokenFromCookies();
+    if (!token) return null;
+    return verifyToken(token);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function setAuthCookie(token: string): void {
-  // This is used in API routes
-  // The actual cookie setting is done via the response headers
+    // This is used in API routes
+    // The actual cookie setting is done via the response headers
 }
 
 export const AUTH_COOKIE_OPTIONS = {
-  name: COOKIE_NAME,
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
-  path: "/",
-  maxAge: 60 * 60 * 24 * 7, // 7 days
+    name: COOKIE_NAME,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
 };
