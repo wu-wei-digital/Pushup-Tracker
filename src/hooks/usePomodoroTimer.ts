@@ -62,6 +62,9 @@ export function usePomodoroTimer() {
     const [displayTime, setDisplayTime] = useState("00:00");
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const lastTickRef = useRef<number>(Date.now());
+    // Keep a ref to always have the latest session (avoids stale closure in intervals)
+    const sessionRef = useRef<PomodoroSessionState | null>(null);
+    sessionRef.current = session;
 
     const formatTime = useCallback((seconds: number): string => {
         const mins = Math.floor(Math.max(0, seconds) / 60);
@@ -133,8 +136,8 @@ export function usePomodoroTimer() {
                     const remaining = calculateTimeRemaining(session);
 
                     if (remaining <= 0) {
-                        // Phase ended while away - trigger transition
-                        handlePhaseTransition(session);
+                        // Phase ended while away - trigger transition (use ref for latest session with pushups)
+                        handlePhaseTransition(sessionRef.current!);
                     } else {
                         setDisplayTime(formatTime(remaining));
                     }
@@ -209,8 +212,8 @@ export function usePomodoroTimer() {
             const currentRemaining = calculateTimeRemaining(session);
 
             if (currentRemaining <= 0) {
-                // Time's up - transition phases
-                handlePhaseTransition(session);
+                // Time's up - transition phases (use ref for latest session with pushups)
+                handlePhaseTransition(sessionRef.current!);
             } else {
                 setDisplayTime(formatTime(currentRemaining));
 

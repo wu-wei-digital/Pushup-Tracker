@@ -71,8 +71,8 @@ export default function PomodoroTimer({
                     <div className="flex items-center gap-2 justify-center">
                         <Input
                             type="number"
-                            value={quickAddAmount}
-                            onChange={(e) => setQuickAddAmount(parseInt(e.target.value) || 0)}
+                            value={quickAddAmount || ""}
+                            onChange={(e) => setQuickAddAmount(e.target.value === "" ? 0 : parseInt(e.target.value))}
                             min={1}
                             max={100}
                             className="w-20 text-center"

@@ -40,8 +40,8 @@ export default function PomodoroSettings({ onStart, onCancel }: PomodoroSettings
                     </label>
                     <Input
                         type="number"
-                        value={workDuration}
-                        onChange={(e) => setWorkDuration(parseInt(e.target.value) || 25)}
+                        value={workDuration || ""}
+                        onChange={(e) => setWorkDuration(e.target.value === "" ? 0 : parseInt(e.target.value))}
                         min={1}
                         max={60}
                     />
@@ -54,8 +54,8 @@ export default function PomodoroSettings({ onStart, onCancel }: PomodoroSettings
                     </label>
                     <Input
                         type="number"
-                        value={breakDuration}
-                        onChange={(e) => setBreakDuration(parseInt(e.target.value) || 5)}
+                        value={breakDuration || ""}
+                        onChange={(e) => setBreakDuration(e.target.value === "" ? 0 : parseInt(e.target.value))}
                         min={1}
                         max={30}
                     />
@@ -68,8 +68,8 @@ export default function PomodoroSettings({ onStart, onCancel }: PomodoroSettings
                     </label>
                     <Input
                         type="number"
-                        value={pushupTarget}
-                        onChange={(e) => setPushupTarget(parseInt(e.target.value) || 10)}
+                        value={pushupTarget || ""}
+                        onChange={(e) => setPushupTarget(e.target.value === "" ? 0 : parseInt(e.target.value))}
                         min={1}
                         max={100}
                     />
