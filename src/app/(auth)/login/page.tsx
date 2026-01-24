@@ -1,8 +1,14 @@
 import { Suspense } from "react";
+import { Metadata } from "next";
 import LoginForm from "@/components/auth/LoginForm";
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Login - Pushup Tracker",
+    description: "Sign in to your Pushup Tracker account. Track your pushups, compete with friends, and achieve your fitness goals.",
+    robots: {
+        index: true,
+        follow: true,
+    },
 };
 
 export default function LoginPage() {

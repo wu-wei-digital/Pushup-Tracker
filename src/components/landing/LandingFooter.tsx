@@ -1,6 +1,6 @@
-"use client";
-
 export default function LandingFooter() {
+    const currentYear = new Date().getFullYear();
+
     return (
         <footer className="py-8 bg-background border-t border-sage-100">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -17,7 +17,7 @@ export default function LandingFooter() {
                     {" "}project
                 </p>
                 <p className="text-xs text-sage-300 mt-2">
-          &copy; {new Date().getFullYear()} Pushup Tracker. All rights reserved.
+          &copy; {currentYear} Pushup Tracker. All rights reserved.
                 </p>
             </div>
         </footer>

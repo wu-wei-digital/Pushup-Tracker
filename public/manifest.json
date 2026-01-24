@@ -1,0 +1,43 @@
+{
+  "name": "Pushup Tracker",
+  "short_name": "Pushup Tracker",
+  "description": "Social, gamified pushup tracking app with challenges, achievements, and friends. Track your progress, compete with friends, and achieve your fitness goals.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#7c9885",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["fitness", "health", "lifestyle", "sports"],
+  "icons": [
+    {
+      "src": "/pushup-tracker-logo-light.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pushup-tracker-logo-light.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pushup-tracker-logo-light.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "label": "Pushup Tracker - Track your progress, compete with friends"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
