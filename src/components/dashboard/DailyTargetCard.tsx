@@ -25,7 +25,7 @@ export default function DailyTargetCard({ dailyTarget, todayTotal }: DailyTarget
 
             <div className="mt-4">
                 <p className="text-4xl font-bold text-foreground">
-                    {dailyTarget}
+                    {dailyTarget.toFixed(2)}
                 </p>
                 <p className="text-sm text-sage-500 mt-1">
           pushups per day to reach goal
@@ -46,7 +46,7 @@ export default function DailyTargetCard({ dailyTarget, todayTotal }: DailyTarget
               Remaining today:
                         </span>
                         <span className="font-bold text-coral-500">
-                            {remaining}
+                            {remaining.toFixed(2)}
                         </span>
                     </div>
                 )}

@@ -24,6 +24,7 @@ export async function GET(
                 id: true,
                 username: true,
                 displayName: true,
+                profilePicture: true,
                 bio: true,
                 yearlyGoal: true,
                 timezone: true,

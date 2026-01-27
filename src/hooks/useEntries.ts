@@ -8,7 +8,11 @@ interface TodayEntriesResponse {
   total: number;
 }
 
-export function useEntries() {
+interface UseEntriesOptions {
+  onEntryChange?: () => void;
+}
+
+export function useEntries(options: UseEntriesOptions = {}) {
     const [entries, setEntries] = useState<PushupEntry[]>([]);
     const [todayTotal, setTodayTotal] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +54,9 @@ export function useEntries() {
             setEntries((prev) => [entry, ...prev]);
             setTodayTotal((prev) => prev + amount);
 
+            // Notify about entry change (for XP/level updates)
+            options.onEntryChange?.();
+
             return { success: true, entry, pointsEarned };
         } catch (err) {
             const message = err instanceof Error ? err.message : "An error occurred";
@@ -87,6 +94,9 @@ export function useEntries() {
                 }
             }
 
+            // Notify about entry change (for XP/level updates)
+            options.onEntryChange?.();
+
             return { success: true, entry };
         } catch (err) {
             const message = err instanceof Error ? err.message : "An error occurred";
@@ -113,6 +123,9 @@ export function useEntries() {
             if (deletedEntry) {
                 setTodayTotal((prev) => prev - deletedEntry.amount);
             }
+
+            // Notify about entry change (for XP/level updates)
+            options.onEntryChange?.();
 
             return { success: true };
         } catch (err) {

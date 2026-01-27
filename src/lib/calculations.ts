@@ -9,7 +9,7 @@ export function calculateDailyTarget(yearlyGoal: number, totalDone: number, time
     const remaining = yearlyGoal - totalDone;
     if (remaining <= 0) return 0;
 
-    return Math.ceil(remaining / daysRemaining);
+    return Math.round((remaining / daysRemaining) * 100) / 100;
 }
 
 export function calculateYearProgress(totalDone: number, yearlyGoal: number): number {
@@ -171,9 +171,11 @@ export function getWeekBounds(timezone?: string): { start: Date; end: Date } {
         const dateStr = formatter.format(now);
         const localDate = new Date(dateStr + "T12:00:00");
         const dayOfWeek = localDate.getDay();
+        // Convert: Sunday (0) → 6, Monday (1) → 0, ... Saturday (6) → 5
+        const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
         const startDate = new Date(localDate);
-        startDate.setDate(localDate.getDate() - dayOfWeek);
+        startDate.setDate(localDate.getDate() - mondayOffset);
         const endDate = new Date(startDate);
         endDate.setDate(startDate.getDate() + 6);
 
@@ -207,8 +209,10 @@ export function getWeekBounds(timezone?: string): { start: Date; end: Date } {
 
     // Fallback to UTC
     const dayOfWeek = now.getUTCDay();
-    const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - dayOfWeek, 0, 0, 0, 0));
-    const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - dayOfWeek + 6, 23, 59, 59, 999));
+    // Convert: Sunday (0) → 6, Monday (1) → 0, ... Saturday (6) → 5
+    const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - mondayOffset, 0, 0, 0, 0));
+    const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - mondayOffset + 6, 23, 59, 59, 999));
 
     return { start, end };
 }

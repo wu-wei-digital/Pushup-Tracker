@@ -43,6 +43,7 @@ export async function GET(request: NextRequest) {
                         id: true,
                         username: true,
                         displayName: true,
+                        profilePicture: true,
                         level: true,
                         currentTitle: true,
                     },

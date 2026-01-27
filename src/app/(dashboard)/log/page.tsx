@@ -9,7 +9,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDayChange } from "@/hooks/useDayChange";
 
 export default function LogPage() {
-    const { user } = useAuth();
+    const { user, refreshUser } = useAuth();
     const {
         entries,
         todayTotal,
@@ -18,7 +18,7 @@ export default function LogPage() {
         addEntry,
         updateEntry,
         deleteEntry,
-    } = useEntries();
+    } = useEntries({ onEntryChange: refreshUser });
 
     // Fetch entries on page load
     useEffect(() => {

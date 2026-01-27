@@ -26,8 +26,8 @@ export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
             if (newTotal > max) max = newTotal;
         }
 
-        // Group days into weeks
-        const weekStart = startOfWeek(yearStart, { weekStartsOn: 0 });
+        // Group days into weeks (Monday start)
+        const weekStart = startOfWeek(yearStart, { weekStartsOn: 1 });
         const numWeeks = differenceInWeeks(today, weekStart) + 1;
 
         const weeksArray: Array<Array<{ date: Date; dateStr: string; total: number } | null>> = [];
@@ -38,7 +38,9 @@ export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
 
         for (const day of days) {
             const weekIndex = differenceInWeeks(day, weekStart);
-            const dayIndex = getDay(day);
+            // Convert: Sunday (0) → 6, Monday (1) → 0, ... Saturday (6) → 5
+            const rawDay = getDay(day);
+            const dayIndex = rawDay === 0 ? 6 : rawDay - 1;
             const dateStr = format(day, "yyyy-MM-dd");
             weeksArray[weekIndex][dayIndex] = {
                 date: day,
@@ -59,7 +61,7 @@ export default function CalendarHeatmap({ data }: CalendarHeatmapProps) {
         return "bg-green-600";
     };
 
-    const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
     return (
         <div className="overflow-x-auto">
