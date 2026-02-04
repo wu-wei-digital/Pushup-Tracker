@@ -65,6 +65,15 @@ export default function LoginForm() {
                     autoComplete="current-password"
                 />
 
+                <div className="text-right">
+                    <Link
+                        href="/forgot-password"
+                        className="text-sm text-sage-600 hover:text-coral-500 transition-colors"
+                    >
+                        Forgot password?
+                    </Link>
+                </div>
+
                 <Button type="submit" className="w-full" isLoading={isLoading}>
           Sign In
                 </Button>

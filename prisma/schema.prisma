@@ -45,6 +45,7 @@ model User {
   teamMemberships           TeamMember[]
   teamInvitationsSent       TeamInvitation[]         @relation("InvitationsSent")
   teamInvitationsReceived   TeamInvitation[]         @relation("InvitationsReceived")
+  passwordResetTokens       PasswordResetToken[]
 
   @@map("users")
 }
@@ -231,4 +232,16 @@ model TeamInvitation {
 
   @@unique([teamId, inviteeId])
   @@map("team_invitations")
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
 }
